@@ -1,0 +1,134 @@
+---
+interface Props {
+	class?: string;
+	svgFile?: string;
+}
+
+const { class: className = '', svgFile = 'dom.svg' } = Astro.props;
+---
+
+<div class={`flex justify-center ${className}`} data-svg-container data-svg-file={svgFile}>
+	<!-- SVG will be loaded here -->
+</div>
+
+<script>
+	async function loadAndAnimateSVG(container: HTMLElement) {
+		if (!container) return;
+
+		const svgFile = container.getAttribute('data-svg-file') || 'dom.svg';
+
+		try {
+			const response = await fetch(`/${svgFile}`);
+			const svgText = await response.text();
+			
+			const tempDiv = document.createElement('div');
+			tempDiv.innerHTML = svgText;
+			// Try to find SVG with class first, otherwise use the root SVG element
+			let svg = tempDiv.querySelector('.svg-draw-animated') as SVGElement | null;
+			if (!svg) {
+				svg = tempDiv.querySelector('svg');
+			}
+			
+			if (!svg) {
+				console.error('SVG element not found');
+				return;
+			}
+			
+			// Add the class if it doesn't exist
+			if (!svg.classList.contains('svg-draw-animated')) {
+				svg.classList.add('svg-draw-animated');
+			}
+
+			container.innerHTML = '';
+			container.appendChild(svg);
+			
+			// Ensure SVG is visible
+			if (svg instanceof SVGElement) {
+				svg.style.display = 'block';
+			}
+
+			// Wait for SVG to be in DOM before calculating path lengths
+			requestAnimationFrame(() => {
+				requestAnimationFrame(() => {
+					// Get all paths AFTER inserting into DOM (needed for getTotalLength to work)
+					const paths = svg.querySelectorAll('path');
+					
+					if (paths.length === 0) {
+						console.warn('No paths found in SVG');
+						return;
+					}
+					
+					const duration = 6; // seconds
+					
+					paths.forEach((path) => {
+						// Calculate path length first (must be in DOM)
+						const pathLength = path.getTotalLength();
+						
+						if (pathLength === 0) {
+							// If path has no length, make it visible immediately
+							path.style.fillOpacity = '1';
+							path.style.strokeOpacity = '1';
+							return;
+						}
+
+						// Set initial state for animation
+						path.style.fillOpacity = '0';
+						path.style.strokeOpacity = '1';
+						
+						// Calculate and set the dash properties for line drawing animation
+						path.style.strokeDasharray = `${pathLength} ${pathLength}`;
+						path.style.strokeDashoffset = String(pathLength);
+						
+						// Force reflow to ensure initial state is applied
+						void path.getBoundingClientRect();
+						
+						// Animate using CSS animation
+						path.style.animation = `draw-path ${duration}s ease-in-out forwards`;
+					});
+					
+					console.log(`Animated ${paths.length} paths`);
+					
+					// Debug: Check if SVG is visible
+					const svgRect = svg.getBoundingClientRect();
+					console.log('SVG dimensions:', svgRect.width, svgRect.height);
+				});
+			});
+		} catch (error) {
+			console.error('Error loading SVG:', error);
+		}
+	}
+
+	function initAllSVGs() {
+		const containers = document.querySelectorAll<HTMLElement>('[data-svg-container]');
+		containers.forEach((container) => {
+			loadAndAnimateSVG(container);
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initAllSVGs);
+	} else {
+		initAllSVGs();
+	}
+</script>
+
+<style>
+	.svg-draw-animated {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+
+	.svg-draw-animated path {
+		fill-opacity: 0;
+		stroke-opacity: 1;
+	}
+
+	@keyframes draw-path {
+		to {
+			stroke-dashoffset: 0;
+			fill-opacity: 1;
+		}
+	}
+</style>
+

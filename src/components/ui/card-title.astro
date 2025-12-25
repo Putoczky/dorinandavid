@@ -1,0 +1,25 @@
+---
+import { clsx } from 'clsx';
+
+interface Props {
+	class?: string;
+	as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+}
+
+const { class: className, as: Component = 'h3' } = Astro.props;
+---
+
+<Component class={clsx('card-title', className)}>
+	<slot />
+</Component>
+
+<style>
+	.card-title {
+		font-size: 1.5rem;
+		font-weight: 600;
+		line-height: 1.2;
+		letter-spacing: -0.025em;
+		color: #1a1a1a;
+	}
+</style>
+

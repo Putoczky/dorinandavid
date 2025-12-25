@@ -1,0 +1,135 @@
+---
+import { clsx } from 'clsx';
+import AnimatedSVG from '../AnimatedSVG.astro';
+
+interface Props {
+	class?: string;
+	svgFile?: string;
+}
+
+const { class: className, svgFile = 'dom.svg' } = Astro.props;
+---
+
+<div class={clsx('card', className)}>
+	<!-- SVG Background -->
+	<div class="svg-background">
+		<AnimatedSVG svgFile={svgFile} />
+	</div>
+	
+	<!-- Content overlay -->
+	<div class="card-content-overlay">
+		<slot />
+	</div>
+	
+	<!-- Leafy decoration - top left corner, running along top edge -->
+	<img 
+		src="/leafy.png" 
+		alt="" 
+		class="leafy-decoration leafy-top-left"
+	/>
+	<img 
+		src="/leafy.png" 
+		alt="" 
+		class="leafy-decoration leafy-bottom-right"
+	/>
+</div>
+
+<style>
+	.card {
+		position: relative;
+		background-color: #fefcf8;
+		border-radius: 0.5rem;
+		border: 1px solid rgba(139, 115, 85, 0.2);
+		box-shadow: 
+			0 4px 6px -1px rgba(0, 0, 0, 0.1),
+			0 2px 4px -1px rgba(0, 0, 0, 0.06),
+			inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+		padding: 0;
+		overflow: visible;
+		min-height: 500px;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.svg-background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		opacity: 0.3;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 2rem;
+		pointer-events: none;
+		overflow: hidden;
+		border-radius: 0.5rem;
+	}
+
+	.svg-background :global([data-svg-container]) {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.svg-background :global(svg),
+	.svg-background :global(.svg-draw-animated) {
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		object-fit: contain;
+	}
+
+	.card-content-overlay {
+		position: relative;
+		z-index: 2;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding: 2rem;
+	}
+
+	.leafy-decoration {
+		position: absolute;
+		pointer-events: none;
+		z-index: 20;
+		user-select: none;
+		opacity: 0;
+		animation: fadeIn 2s ease-out forwards;
+	}
+
+	.leafy-top-left {
+		top: -40px;
+		left: -40px;
+		max-width: 160px;
+		height: auto;
+		transform: scaleX(1) scaleY(-1);
+		animation-delay: 0s;
+	}
+
+	.leafy-bottom-right {
+		bottom: -40px;
+		right: -40px;
+		max-width: 160px;
+		height: auto;
+		transform: scaleX(-1) scaleY(1);
+		animation-delay: 0.3s;
+	}
+
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+</style>
+

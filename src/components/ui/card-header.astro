@@ -1,0 +1,23 @@
+---
+import { clsx } from 'clsx';
+
+interface Props {
+	class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class={clsx('card-header', className)}>
+	<slot />
+</div>
+
+<style>
+	.card-header {
+		display: flex;
+		flex-direction: column;
+		space-y: 1.5rem;
+		padding-bottom: 1rem;
+	}
+</style>
+

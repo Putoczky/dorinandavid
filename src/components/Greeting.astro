@@ -1,0 +1,77 @@
+---
+import 'khoshnus/style.css';
+---
+
+<div class="greeting-container">
+	<svg id="khoshnus-greeting" width="100%" height="200" viewBox="0 0 1000 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+
+<script>
+	async function initKhoshnus() {
+		try {
+			// Wait for the SVG element to be in the DOM
+			const svgElement = document.getElementById('khoshnus-greeting');
+			if (!svgElement) {
+				console.error('SVG element not found');
+				return;
+			}
+
+			// Wait a bit more to ensure everything is ready
+			await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+			const { Manuscript, FONT_MATRIX } = await import('khoshnus');
+			
+			const manuscript = new Manuscript({
+				svgId: 'khoshnus-greeting',
+			});
+
+			manuscript.setup({
+				font: FONT_MATRIX['Pinyon Script'].name,
+				fontSize: '48px',
+			});
+
+			// Write the greeting with Hungarian characters
+			manuscript.write('Kedves Vendégeink!', {
+				textElementAttributes: {
+					x: '50%',
+					y: '50%',
+					textAnchor: 'middle',
+					dominantBaseline: 'middle',
+				},
+				writeConfiguration: {
+					eachLetterDelay: 150,
+					delayOperation: 0,
+				},
+			});
+		} catch (error) {
+			console.error('Error initializing Khoshnus:', error);
+		}
+	}
+
+	// Ensure DOM is ready
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initKhoshnus);
+	} else {
+		// Use setTimeout to ensure the component is fully rendered
+		setTimeout(initKhoshnus, 100);
+	}
+</script>
+
+<style>
+	.greeting-container {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 2rem 1rem;
+		background: transparent;
+	}
+
+	#khoshnus-greeting {
+		max-width: 900px;
+		width: 100%;
+		height: 200px;
+		display: block;
+	}
+</style>
+
