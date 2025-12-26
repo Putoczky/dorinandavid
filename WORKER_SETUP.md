@@ -14,11 +14,35 @@ The Worker acts as a secure proxy, keeping your Airtable API key safe.
 
 ### 1. Install Wrangler CLI (if not already installed)
 
+Wrangler should already be installed as a dev dependency in the worker package. If you need to install it globally or verify installation:
+
 ```bash
-pnpm add -D wrangler @cloudflare/workers-types
+# Check if wrangler is installed
+wrangler --version
+
+# If not installed, install it (from worker directory)
+cd worker
+pnpm install
 ```
 
-### 2. Deploy the Worker
+### 2. Authenticate with Cloudflare
+
+Before deploying, you need to log in to your Cloudflare account:
+
+```bash
+# From the worker directory
+cd worker
+wrangler login
+```
+
+This will:
+1. Open your browser to Cloudflare's login page
+2. Prompt you to authorize Wrangler
+3. Save your authentication token locally
+
+**Note**: You need a Cloudflare account. If you don't have one, sign up at [cloudflare.com](https://www.cloudflare.com) (free tier works fine for Workers).
+
+### 3. Deploy the Worker
 
 1. Navigate to the worker directory:
 ```bash
@@ -46,7 +70,7 @@ pnpm worker:deploy
 
 After deployment, you'll get a Worker URL like: `https://airtable-proxy.your-subdomain.workers.dev`
 
-### 3. Configure the Astro App
+### 4. Configure the Astro App
 
 Set the Worker URL as an environment variable. You have two options:
 
@@ -66,7 +90,7 @@ For Cloudflare Pages, add this in the dashboard:
 
 If you want to use Cloudflare's service binding feature, you can bind the Worker directly to your Pages project. This requires additional configuration in `wrangler.toml`.
 
-### 4. Local Development
+### 5. Local Development
 
 For local development, you can run the worker locally:
 

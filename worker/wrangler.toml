@@ -1,6 +1,6 @@
 name = "airtable-proxy"
 main = "index.ts"
-compatibility_date = "2024-01-01"
+compatibility_date = "2024-12-01"
 
 # Environment variables (secrets) should be set via:
 # wrangler secret put AIRTABLE_API_KEY

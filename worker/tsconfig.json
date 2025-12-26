@@ -11,7 +11,12 @@
 		"forceConsistentCasingInFileNames": true,
 		"composite": true,
 		"declaration": true,
-		"declarationMap": true
+		"declarationMap": true,
+		"baseUrl": ".",
+		"paths": {
+			"@app/*": ["../app/src/*"],
+			"@worker/*": ["./*"]
+		}
 	}
 }
 

@@ -6,16 +6,21 @@
   ],
   "exclude": [
     "dist",
-    "worker"
+    "../worker"
   ],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@worker/*": ["../worker/*"],
+      "@app/*": ["src/*"]
+    }
   },
   "references": [
     {
-      "path": "./worker"
+      "path": "../worker"
     }
   ]
 }
