@@ -1,0 +1,11 @@
+name = "david-wedding"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = ".astro"
+
+# Cloudflare Worker configuration for Airtable proxy
+[env.production]
+name = "airtable-proxy"
+
+# Worker will be deployed separately
+# Use: wrangler deploy --env production
+

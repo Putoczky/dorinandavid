@@ -6,14 +6,30 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "worker:dev": "cd worker && wrangler dev",
+    "worker:deploy": "cd worker && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/react": "^4.4.2",
+    "@hono/zod-validator": "^0.7.6",
     "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/react-query": "^5.90.12",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "astro": "^5.16.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "khoshnus": "^3.0.0",
-    "tailwindcss": "^4.1.18"
+    "hono": "^4.11.2",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-hook-form": "^7.69.0",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.2.1"
+  },
+  "devDependencies": {
+    "@astrojs/cloudflare": "^12.6.12",
+    "@cloudflare/workers-types": "^4.20251225.0",
+    "wrangler": "^4.54.0"
   }
 }

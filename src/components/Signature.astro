@@ -1,0 +1,108 @@
+---
+---
+
+<div class="signature-container">
+	<svg class="signature-svg" viewBox="0 0 600 90" xmlns="http://www.w3.org/2000/svg">
+		<text x="0" y="50%" dominant-baseline="middle" class="signature-text">
+			Dávid és Dorina
+		</text>
+	</svg>
+</div>
+
+<style>
+	.signature-container {
+		padding: 1.5rem 1rem;
+		text-align: left;
+		max-width: 800px;
+		margin: 0 auto;
+		position: relative;
+		z-index: 2;
+	}
+
+	.signature-svg {
+		width: auto;
+		height: 90px;
+		margin: 0;
+		display: block;
+	}
+
+	.signature-text {
+		font-family: 'Style Script', cursive;
+		font-size: 60px;
+		font-weight: 400;
+		fill: none;
+		stroke: #1a1a1a;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-dasharray: 2500;
+		stroke-dashoffset: 2500;
+		/* Animation will be triggered by JavaScript when in viewport */
+	}
+	
+	.signature-text.animate {
+		animation: drawStroke 4s ease-in-out forwards;
+	}
+
+	@keyframes drawStroke {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.signature-svg {
+			height: 70px;
+			max-width: 400px;
+		}
+		.signature-text {
+			font-size: 45px;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.signature-svg {
+			height: 60px;
+			max-width: 350px;
+		}
+		.signature-text {
+			font-size: 40px;
+		}
+	}
+</style>
+
+<script>
+	function initSignatureAnimation() {
+		const signatureContainer = document.querySelector('.signature-container');
+		const signatureText = document.querySelector('.signature-text');
+		
+		if (!signatureContainer || !signatureText) return;
+		
+		// Check if already animated
+		if (signatureText.classList.contains('animate')) return;
+		
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						signatureText.classList.add('animate');
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{
+				threshold: 1, // Trigger when 10% of the element is visible
+				rootMargin: '0px',
+			}
+		);
+		
+		observer.observe(signatureContainer);
+	}
+	
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initSignatureAnimation);
+	} else {
+		initSignatureAnimation();
+	}
+</script>
+

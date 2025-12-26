@@ -1,0 +1,31 @@
+---
+---
+
+<div class="relative z-[2] text-center pt-20 px-4 pb-6 md:pt-48">
+	<h1 class="title-text">
+		<slot />
+	</h1>
+</div>
+
+<style>
+	.title-text {
+		font-family: 'Style Script', cursive;
+		font-size: 2.5rem;
+		font-weight: 400;
+		color: #1a1a1a;
+		margin: 0;
+	}
+
+	@media (min-width: 768px) {
+		.title-text {
+			font-size: 3rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.title-text {
+			font-size: 4rem;
+		}
+	}
+</style>
+

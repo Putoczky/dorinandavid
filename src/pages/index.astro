@@ -1,11 +1,20 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/ui/card.astro';
-import Greeting from '../components/Greeting.astro';
+import Title from '../components/Title.astro';
+import Invitation from '../components/Invitation.astro';
+import Signature from '../components/Signature.astro';
+import RSVP from '../components/RSVP.astro';
+import Footer from '../components/Footer.astro';
 ---
 
 <Layout>
-	<Greeting />
+	<div class="top-leafs">
+		<img src="/top-leafs.png" alt="" class="top-leafs-image" />
+	</div>
+	<Title>Meghívó</Title>
+	<Invitation />
+	<Signature />
 	<main class="container mx-auto px-4 py-8 max-w-6xl card-container">
 		<div class="cards-grid">
 			<Card svgFile="dom.svg">
@@ -22,9 +31,29 @@ import Greeting from '../components/Greeting.astro';
 			</Card>
 		</div>
 	</main>
+	<div class="mt-16">
+		<RSVP />
+	</div>
+	<Footer />
 </Layout>
 
 <style>
+	.top-leafs {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		z-index: 1;
+		pointer-events: none;
+	}
+
+	.top-leafs-image {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
 	.card-container {
 		overflow: visible;
 	}
