@@ -64,7 +64,7 @@ async function airtableRequest(
 function mapAirtableRecord(record: any): Guest {
 	return {
 		id: record.id,
-		name: record.fields.Name as string,
+		name: (record.fields['Full name'] as string) || (record.fields.Name as string) || '',
 		surname: (record.fields.Surname as string) || undefined,
 		familyId: (record.fields['Family ID'] as string) || undefined,
 		attending: (record.fields.Attending as boolean) ?? true,
@@ -85,9 +85,9 @@ const route = app.post(
 		const { name } = c.req.valid('json') as VerifyNameRequest;
 
 		try {
-			// Find guest by name
+			// Find guest by name - search in Full name column
 			const searchUrl = `${TABLE_NAME}?filterByFormula=${encodeURIComponent(
-				`SEARCH(LOWER("${name.toLowerCase()}"), LOWER({Name}))`
+				`SEARCH(LOWER("${name.toLowerCase()}"), LOWER({Full name}))`
 			)}`;
 			const searchResponse = await airtableRequest(env, 'GET', searchUrl);
 			const searchData = (await searchResponse.json()) as { records?: any[] };
