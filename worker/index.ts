@@ -34,6 +34,7 @@ const app = new Hono<HonoEnv>();
 app.use('*', cors());
 
 const TABLE_NAME = 'Guests';
+const FAMILIES_TABLE_NAME = 'Families';
 const AIRTABLE_API_BASE = 'https://api.airtable.com/v0';
 
 async function airtableRequest(
@@ -73,6 +74,8 @@ function mapAirtableRecord(record: any): Guest {
 		dietaryRestrictions: (record.fields['Dietary Restrictions'] as string) || undefined,
 		notes: (record.fields.Notes as string) || undefined,
 		submittedAt: (record.fields['Submitted At'] as string) || undefined,
+		szertartas: (record.fields.Szertartas as boolean) ?? false,
+		lakodalom: (record.fields.Lakodalom as boolean) ?? false,
 	};
 }
 
@@ -99,27 +102,52 @@ const route = app.post(
 				);
 			}
 
-			const guest = mapAirtableRecord(searchData.records[0]);
-			let familyMembers: Guest[] = [];
-
-			// Get family members by Family ID or Surname
-			if (guest.familyId) {
-				const familyUrl = `${TABLE_NAME}?filterByFormula=${encodeURIComponent(
-					`{Family ID} = "${guest.familyId}"`
-				)}`;
-				const familyResponse = await airtableRequest(env, 'GET', familyUrl);
-				const familyData = (await familyResponse.json()) as { records?: any[] };
-				familyMembers = familyData.records?.map(mapAirtableRecord) || [];
-			} else if (guest.surname) {
-				const surnameUrl = `${TABLE_NAME}?filterByFormula=${encodeURIComponent(
-					`{Surname} = "${guest.surname}"`
-				)}`;
-				const surnameResponse = await airtableRequest(env, 'GET', surnameUrl);
-				const surnameData = (await surnameResponse.json()) as { records?: any[] };
-				familyMembers = surnameData.records?.map(mapAirtableRecord) || [];
-			} else {
-				familyMembers = [guest];
+			const guestRecord = searchData.records[0];
+			const guest = mapAirtableRecord(guestRecord);
+			
+			// Get family members from the Families table
+			const familyRelation = guestRecord.fields['Family name'] as string[] | undefined;
+			
+			if (!familyRelation || familyRelation.length === 0) {
+				throw new Error('Guest does not have a family relation');
 			}
+			
+			const familyRecordId = familyRelation[0];
+			
+			// Get the family record from the Families table
+			const familyRecordUrl = `${FAMILIES_TABLE_NAME}/${familyRecordId}`;
+			const familyRecordResponse = await airtableRequest(env, 'GET', familyRecordUrl);
+			
+			if (!familyRecordResponse.ok) {
+				const errorText = await familyRecordResponse.text();
+				throw new Error(`Failed to fetch family record: ${errorText}`);
+			}
+			
+			const familyRecordData = (await familyRecordResponse.json()) as { fields?: any };
+			const memberIds = familyRecordData.fields?.['Members'] as string[] | undefined;
+			
+			if (!memberIds || memberIds.length === 0) {
+				throw new Error('Family record has no members');
+			}
+			
+			// Fetch all guest records using their IDs with OR() filter
+			const recordIdFilters = memberIds.map(id => `RECORD_ID() = "${id}"`).join(', ');
+			const guestFilter = `OR(${recordIdFilters})`;
+			const guestsUrl = `${TABLE_NAME}?filterByFormula=${encodeURIComponent(guestFilter)}`;
+			
+			const guestsResponse = await airtableRequest(env, 'GET', guestsUrl);
+			
+			if (!guestsResponse.ok) {
+				const errorText = await guestsResponse.text();
+				throw new Error(`Failed to fetch guest records: ${errorText}`);
+			}
+			
+			const guestsData = (await guestsResponse.json()) as { records?: any[] };
+			if (!guestsData.records || guestsData.records.length === 0) {
+				throw new Error('No guest records found for family members');
+			}
+			
+			const familyMembers = guestsData.records.map(mapAirtableRecord);
 
 			const response: VerifyNameResponse = {
 				success: true,
@@ -142,7 +170,7 @@ const route = app.post(
 	zValidator('json', RSVPRequestSchema),
 	async (c): Promise<Response> => {
 		const env = c.env;
-		const { guestId, attending, email, phone, dietaryRestrictions, notes } = c.req.valid('json') as RSVPRequest;
+		const { guestId, attending, email, phone, dietaryRestrictions, notes, szertartas, lakodalom } = c.req.valid('json') as RSVPRequest;
 
 		try {
 			const fields: Record<string, any> = {};
@@ -152,6 +180,8 @@ const route = app.post(
 			if (dietaryRestrictions !== undefined && dietaryRestrictions !== '')
 				fields['Dietary Restrictions'] = dietaryRestrictions;
 			if (notes !== undefined && notes !== '') fields.Notes = notes;
+			if (szertartas !== undefined) fields.Szertartas = szertartas;
+			if (lakodalom !== undefined) fields.Lakodalom = lakodalom;
 			fields['Submitted At'] = new Date().toISOString();
 
 			const updateResponse = await airtableRequest(env, 'PATCH', TABLE_NAME, {

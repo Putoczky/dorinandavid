@@ -31,7 +31,7 @@
 		font-size: 60px;
 		font-weight: 400;
 		fill: none;
-		stroke: #1a1a1a;
+		stroke: #0d0c16;
 		stroke-width: 2;
 		stroke-linecap: round;
 		stroke-linejoin: round;
@@ -91,8 +91,8 @@
 				});
 			},
 			{
-				threshold: 1, // Trigger when 10% of the element is visible
-				rootMargin: '0px',
+				threshold: 0.1, // Trigger when 10% of the element is visible
+				rootMargin: '100px', // Start animation 100px before element enters viewport
 			}
 		);
 		

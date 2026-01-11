@@ -5,39 +5,90 @@ import AnimatedSVG from '../AnimatedSVG.astro';
 interface Props {
 	class?: string;
 	svgFile?: string;
+	backContent?: string;
 }
 
-const { class: className, svgFile = 'dom.svg' } = Astro.props;
+const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 ---
 
-<div class={clsx('card', className)}>
-	<!-- SVG Background -->
-	<div class="svg-background">
-		<AnimatedSVG svgFile={svgFile} />
+<div class={clsx('card-wrapper', className)}>
+	<div class="card-flip-container">
+		<!-- Front side -->
+		<div class="card card-front">
+			<!-- SVG Background -->
+			<div class="svg-background">
+				<AnimatedSVG svgFile={svgFile} />
+			</div>
+			
+			<!-- Content overlay -->
+			<div class="card-content-overlay">
+				<slot />
+			</div>
+			
+			<!-- Flip button -->
+			<button class="flip-button" aria-label="Flip card">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+					<polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+					<line x1="12" y1="22.08" x2="12" y2="12"></line>
+				</svg>
+				<span>Részletek</span>
+			</button>
+			
+			<!-- Leafy decoration - top left corner, running along top edge -->
+			<img 
+				src="/leafy.png" 
+				alt="" 
+				class="leafy-decoration leafy-top-left"
+			/>
+			<img 
+				src="/leafy.png" 
+				alt="" 
+				class="leafy-decoration leafy-bottom-right"
+			/>
+		</div>
+		
+		<!-- Back side -->
+		<div class="card card-back">
+			<div class="card-back-content">
+				<slot name="back" />
+			</div>
+			
+			<!-- Flip back button -->
+			<button class="flip-button flip-back-button" aria-label="Flip card back">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+					<polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+					<line x1="12" y1="22.08" x2="12" y2="12"></line>
+				</svg>
+				<span>Vissza</span>
+			</button>
+		</div>
 	</div>
-	
-	<!-- Content overlay -->
-	<div class="card-content-overlay">
-		<slot />
-	</div>
-	
-	<!-- Leafy decoration - top left corner, running along top edge -->
-	<img 
-		src="/leafy.png" 
-		alt="" 
-		class="leafy-decoration leafy-top-left"
-	/>
-	<img 
-		src="/leafy.png" 
-		alt="" 
-		class="leafy-decoration leafy-bottom-right"
-	/>
 </div>
 
 <style>
+	.card-wrapper {
+		width: 100%;
+		height: 100%;
+		perspective: 1000px;
+	}
+
+	.card-flip-container {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transform-style: preserve-3d;
+		transition: transform 0.6s;
+	}
+
+	.card-flip-container.flipped {
+		transform: rotateY(180deg);
+	}
+
 	.card {
 		position: relative;
-		background-color: #fefcf8;
+		background-color: #ffffff;
 		border-radius: 0.5rem;
 		border: 1px solid rgba(139, 115, 85, 0.2);
 		box-shadow: 
@@ -49,6 +100,32 @@ const { class: className, svgFile = 'dom.svg' } = Astro.props;
 		min-height: 500px;
 		display: flex;
 		flex-direction: column;
+		width: 100%;
+		max-width: 100%;
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+	}
+
+	.card-front {
+		position: relative;
+		pointer-events: auto;
+		z-index: 10;
+	}
+
+	.card-back {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: rotateY(180deg);
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 0;
+		align-items: center;
+		pointer-events: auto;
+		z-index: 10;
 	}
 
 	.svg-background {
@@ -131,5 +208,125 @@ const { class: className, svgFile = 'dom.svg' } = Astro.props;
 		}
 	}
 
+	.flip-button {
+		position: absolute;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		z-index: 100;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.25rem;
+		background-color: rgba(139, 115, 85, 0.9);
+		color: #ffffff;
+		border: none;
+		border-radius: 0.375rem;
+		font-size: 0.875rem;
+		font-weight: 500;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		pointer-events: auto !important;
+	}
+
+	.flip-button:hover {
+		background-color: rgba(139, 115, 85, 1);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	}
+
+	.flip-button:active {
+		transform: translateY(0);
+	}
+
+	.flip-button svg {
+		width: 18px;
+		height: 18px;
+	}
+
+	.flip-back-button {
+		position: absolute;
+		bottom: 1.5rem;
+		right: 1.5rem;
+		z-index: 200;
+		pointer-events: auto !important;
+		transform: translateZ(0);
+	}
+
+	.card-back-content {
+		padding: 3rem 2rem 5rem 2rem;
+		text-align: center;
+		color: #0d0c16;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	@media (max-width: 640px) {
+		.flip-button {
+			padding: 0.625rem 1rem;
+			font-size: 0.8125rem;
+		}
+
+		.flip-button svg {
+			width: 16px;
+			height: 16px;
+		}
+
+		.card-back-content {
+			padding: 2rem 1.5rem 4.5rem 1.5rem;
+		}
+	}
+
 </style>
 
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		// Use a more robust approach with event delegation
+		document.addEventListener('click', (e) => {
+			// Check if click is on button or any child element (svg, span, etc.)
+			const button = e.target.closest('.flip-button');
+			if (!button) return;
+			
+			const wrapper = button.closest('.card-wrapper');
+			if (!wrapper) return;
+			
+			const flipContainer = wrapper.querySelector('.card-flip-container');
+			if (!flipContainer) return;
+			
+			e.stopPropagation();
+			e.preventDefault();
+			
+			// Toggle the flipped class
+			flipContainer.classList.toggle('flipped');
+			
+			// Debug log to verify it's working
+			console.log('Card flipped:', flipContainer.classList.contains('flipped'));
+		});
+		
+		// Also try direct event listeners as backup
+		setTimeout(() => {
+			const allButtons = document.querySelectorAll('.flip-button');
+			allButtons.forEach((button) => {
+				button.addEventListener('click', function(e) {
+					e.stopPropagation();
+					e.preventDefault();
+					
+					const wrapper = this.closest('.card-wrapper');
+					if (!wrapper) return;
+					
+					const flipContainer = wrapper.querySelector('.card-flip-container');
+					if (!flipContainer) return;
+					
+					flipContainer.classList.toggle('flipped');
+					console.log('Direct listener - Card flipped:', flipContainer.classList.contains('flipped'));
+				});
+			});
+		}, 100);
+	});
+</script>

@@ -14,10 +14,12 @@ interface RSVPFormData {
 	phone?: string;
 	dietaryRestrictions?: string;
 	notes?: string;
+	szertartas?: boolean;
+	lakodalom?: boolean;
 }
 
 export default function RSVPForm() {
-	const [step, setStep] = useState<'verify' | 'rsvp'>('verify');
+	const [step, setStep] = useState<'verify' | 'family-list' | 'rsvp'>('verify');
 	const [familyMembers, setFamilyMembers] = useState<Guest[]>([]);
 	const [rsvpData, setRsvpData] = useState<Record<string, RSVPFormData>>({});
 	const [verifyErrorMessage, setVerifyErrorMessage] = useState<string>('');
@@ -54,12 +56,14 @@ export default function RSVPForm() {
 							phone: member.phone || '',
 							dietaryRestrictions: member.dietaryRestrictions || '',
 							notes: member.notes || '',
+							szertartas: member.szertartas ?? false,
+							lakodalom: member.lakodalom ?? false,
 						};
 					});
 
 					setFamilyMembers(result.familyMembers);
 					setRsvpData(initialRsvpData);
-					setStep('rsvp');
+					setStep('family-list');
 				},
 				onError: async (error: Response) => {
 					// Format error message from response
@@ -95,6 +99,8 @@ export default function RSVPForm() {
 			phone: data.phone || '',
 			dietaryRestrictions: data.dietaryRestrictions || '',
 			notes: data.notes || '',
+			szertartas: data.szertartas ?? false,
+			lakodalom: data.lakodalom ?? false,
 		}));
 
 		// Submit all RSVPs in parallel
@@ -134,20 +140,115 @@ export default function RSVPForm() {
 		}
 	};
 
+	if (step === 'family-list') {
+		return (
+			<div className="p-8 px-4 max-w-[800px] mx-auto relative z-[2]">
+				<h2 className="font-['Style_Script'] text-3xl sm:text-4xl md:text-5xl font-normal text-[#0d0c16] mb-4 text-center">
+					Családtagok
+				</h2>
+				<p className="font-['Style_Script'] text-lg sm:text-xl md:text-2xl font-normal text-[#0d0c16] mb-8 text-center leading-relaxed">
+					A következő családtagokat találtuk:
+				</p>
+
+				<div className="flex flex-col gap-4 max-w-[500px] mx-auto mb-8">
+					{familyMembers.map((member, index) => (
+						<div
+							key={member.id}
+							className="border-b-2 border-[#0d0c16] pb-4 last:border-b-0"
+						>
+							<div className="flex items-center gap-3">
+								<span className="font-['Style_Script'] text-xl sm:text-2xl text-[#0d0c16]">
+									{index + 1}.
+								</span>
+								<div className="flex-1">
+									<h3 className="font-['Style_Script'] text-xl sm:text-2xl md:text-3xl text-[#0d0c16]">
+										{member.name}
+										{member.surname && ` ${member.surname}`}
+									</h3>
+									{member.email && (
+										<p className="font-['Style_Script'] text-base sm:text-lg text-gray-600 mt-1">
+											{member.email}
+										</p>
+									)}
+									{member.phone && (
+										<p className="font-['Style_Script'] text-base sm:text-lg text-gray-600">
+											{member.phone}
+										</p>
+									)}
+									<div className="flex flex-col gap-2 mt-3">
+										<label className="flex items-center gap-3 cursor-pointer">
+											<input
+												type="checkbox"
+												checked={rsvpData[member.id!]?.szertartas ?? false}
+												onChange={(e) =>
+													updateRsvpData(member.id!, { szertartas: e.target.checked })
+												}
+												className="w-5 h-5 cursor-pointer"
+											/>
+											<span className="font-['Style_Script'] text-lg sm:text-xl text-[#0d0c16]">
+												Szertartas
+											</span>
+										</label>
+										<label className="flex items-center gap-3 cursor-pointer">
+											<input
+												type="checkbox"
+												checked={rsvpData[member.id!]?.lakodalom ?? false}
+												onChange={(e) =>
+													updateRsvpData(member.id!, { lakodalom: e.target.checked })
+												}
+												className="w-5 h-5 cursor-pointer"
+											/>
+											<span className="font-['Style_Script'] text-lg sm:text-xl text-[#0d0c16]">
+												Lakodalom
+											</span>
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+
+				<div className="flex gap-4 justify-center">
+					<button
+						type="button"
+						onClick={() => {
+							setStep('verify');
+							setFamilyMembers([]);
+							setRsvpData({});
+							resetName();
+							verifyNameMutation.reset();
+						}}
+						className="bg-transparent border-2 border-[#5a6840] text-[#5a6840] py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#5a6840] hover:text-[#ffffff]"
+					>
+						Vissza
+					</button>
+					<button
+						type="button"
+						onClick={() => setStep('rsvp')}
+						className="bg-[#5a6840] text-[#ffffff] border-0 py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#4a5634] active:bg-[#3a4528]"
+					>
+						Tovább az RSVP-hez
+					</button>
+				</div>
+			</div>
+		);
+	}
+
 	if (step === 'rsvp') {
 		return (
 			<div className="p-8 px-4 max-w-[800px] mx-auto relative z-[2]">
-				<h2 className="font-['Style_Script'] text-3xl sm:text-4xl md:text-5xl font-normal text-[#1a1a1a] mb-4 text-center">
+				<h2 className="font-['Style_Script'] text-3xl sm:text-4xl md:text-5xl font-normal text-[#0d0c16] mb-4 text-center">
 					RSVP
 				</h2>
-				<p className="font-['Style_Script'] text-lg sm:text-xl md:text-2xl font-normal text-[#1a1a1a] mb-8 text-center leading-relaxed">
+				<p className="font-['Style_Script'] text-lg sm:text-xl md:text-2xl font-normal text-[#0d0c16] mb-8 text-center leading-relaxed">
 					Kérjük, jelezd, hogy részt veszel az esküvőnkön
 				</p>
 
 				<div className="flex flex-col gap-8 max-w-[500px] mx-auto">
 					{familyMembers.map((member) => (
-						<div key={member.id} className="border-b-2 border-[#1a1a1a] pb-6">
-							<h3 className="font-['Style_Script'] text-2xl sm:text-3xl text-[#1a1a1a] mb-4">
+						<div key={member.id} className="border-b-2 border-[#0d0c16] pb-6">
+							<h3 className="font-['Style_Script'] text-2xl sm:text-3xl text-[#0d0c16] mb-4">
 								{member.name}
 							</h3>
 
@@ -161,7 +262,7 @@ export default function RSVPForm() {
 										}
 										className="w-5 h-5 cursor-pointer"
 									/>
-									<span className="font-['Style_Script'] text-lg sm:text-xl text-[#1a1a1a]">
+									<span className="font-['Style_Script'] text-lg sm:text-xl text-[#0d0c16]">
 										Részt veszek
 									</span>
 								</label>
@@ -175,7 +276,7 @@ export default function RSVPForm() {
 											onChange={(e) =>
 												updateRsvpData(member.id!, { email: e.target.value })
 											}
-											className="bg-transparent border-0 border-b-2 border-[#1a1a1a] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#1a1a1a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#8b7355]"
+											className="bg-transparent border-0 border-b-2 border-[#0d0c16] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#0d0c16] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#5a6840]"
 										/>
 
 										<input
@@ -185,7 +286,7 @@ export default function RSVPForm() {
 											onChange={(e) =>
 												updateRsvpData(member.id!, { phone: e.target.value })
 											}
-											className="bg-transparent border-0 border-b-2 border-[#1a1a1a] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#1a1a1a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#8b7355]"
+											className="bg-transparent border-0 border-b-2 border-[#0d0c16] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#0d0c16] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#5a6840]"
 										/>
 
 										<textarea
@@ -197,7 +298,7 @@ export default function RSVPForm() {
 												})
 											}
 											rows={3}
-											className="bg-transparent border-0 border-b-2 border-[#1a1a1a] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#1a1a1a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#8b7355] resize-none"
+											className="bg-transparent border-0 border-b-2 border-[#0d0c16] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#0d0c16] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#5a6840] resize-none"
 										/>
 									</>
 								)}
@@ -215,13 +316,10 @@ export default function RSVPForm() {
 						<button
 							type="button"
 							onClick={() => {
-								setStep('verify');
-								setFamilyMembers([]);
-								setRsvpData({});
+								setStep('family-list');
 								setSubmitErrorMessage('');
-								resetName();
 							}}
-							className="bg-transparent border-2 border-[#1a1a1a] text-[#1a1a1a] py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#1a1a1a] hover:text-[#f5f1e8]"
+							className="bg-transparent border-2 border-[#5a6840] text-[#5a6840] py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#5a6840] hover:text-[#ffffff]"
 						>
 							Vissza
 						</button>
@@ -229,7 +327,7 @@ export default function RSVPForm() {
 							type="button"
 							onClick={handleSubmitRSVP}
 							disabled={submitRSVPMutation.isPending}
-							className="bg-[#1a1a1a] text-[#f5f1e8] border-0 py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#3a3a3a] active:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed"
+							className="bg-[#5a6840] text-[#ffffff] border-0 py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#4a5634] active:bg-[#3a4528] disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{submitRSVPMutation.isPending ? 'Küldés...' : 'Küldés'}
 						</button>
@@ -241,10 +339,10 @@ export default function RSVPForm() {
 
 	return (
 		<div className="p-8 px-4 max-w-[800px] mx-auto relative z-[2]">
-			<h2 className="font-['Style_Script'] text-3xl sm:text-4xl md:text-5xl font-normal text-[#1a1a1a] mb-4 text-center">
+			<h2 className="font-['Style_Script'] text-3xl sm:text-4xl md:text-5xl font-normal text-[#0d0c16] mb-4 text-center">
 				RSVP
 			</h2>
-			<p className="font-['Style_Script'] text-lg sm:text-xl md:text-2xl font-normal text-[#1a1a1a] mb-8 text-center leading-relaxed">
+			<p className="font-['Style_Script'] text-lg sm:text-xl md:text-2xl font-normal text-[#0d0c16] mb-8 text-center leading-relaxed">
 				Kérjük, add meg a neved, hogy megtaláljuk a vendéglistán
 			</p>
 			<form
@@ -255,7 +353,7 @@ export default function RSVPForm() {
 					type="text"
 					{...registerName('name', { required: 'A név megadása kötelező' })}
 					placeholder="Név"
-					className="bg-transparent border-0 border-b-2 border-[#1a1a1a] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#1a1a1a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#8b7355]"
+					className="bg-transparent border-0 border-b-2 border-[#0d0c16] py-3 font-['Style_Script'] text-lg sm:text-xl md:text-2xl text-[#0d0c16] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#5a6840]"
 				/>
 				{nameErrors.name && (
 					<span className="text-red-600 font-['Style_Script'] text-lg -mt-6 text-center">
@@ -272,7 +370,7 @@ export default function RSVPForm() {
 				<button
 					type="submit"
 					disabled={verifyNameMutation.isPending}
-					className="bg-[#1a1a1a] text-[#f5f1e8] border-0 py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors self-center hover:bg-[#3a3a3a] active:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed"
+					className="bg-[#5a6840] text-[#ffffff] border-0 py-3 px-8 font-['Style_Script'] text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors self-center hover:bg-[#4a5634] active:bg-[#3a4528] disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{verifyNameMutation.isPending ? 'Keresés...' : 'Keresés'}
 				</button>

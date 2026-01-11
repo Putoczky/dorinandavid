@@ -17,6 +17,8 @@ export const GuestSchema = z.object({
 	dietaryRestrictions: z.string().optional().or(z.literal('')),
 	notes: z.string().optional().or(z.literal('')),
 	submittedAt: z.string().optional(),
+	szertartas: z.boolean().optional(),
+	lakodalom: z.boolean().optional(),
 });
 
 export type Guest = z.infer<typeof GuestSchema>;
@@ -33,6 +35,8 @@ export const RSVPRequestSchema = z.object({
 	phone: z.string().optional().or(z.literal('')),
 	dietaryRestrictions: z.string().optional().or(z.literal('')),
 	notes: z.string().optional().or(z.literal('')),
+	szertartas: z.boolean().optional(),
+	lakodalom: z.boolean().optional(),
 });
 
 // Response schemas

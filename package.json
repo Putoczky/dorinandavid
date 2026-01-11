@@ -7,6 +7,7 @@
     "dev": "pnpm --filter @david-wedding/app dev",
     "build": "pnpm --filter @david-wedding/app build",
     "preview": "pnpm --filter @david-wedding/app preview",
+    "pages:deploy": "pnpm build && cd app && npx wrangler pages deploy dist --project-name=dorinandavid",
     "worker:dev": "pnpm --filter @david-wedding/worker dev",
     "worker:deploy": "pnpm --filter @david-wedding/worker run deploy"
   }
