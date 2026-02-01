@@ -1,148 +1,127 @@
 ---
 ---
 
-<div class="signature-container">
-	<div class="signature-content">
-		<svg class="signature-svg" viewBox="0 0 200 90" xmlns="http://www.w3.org/2000/svg">
-			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="signature-text">
-				David
-			</text>
-		</svg>
-		<div class="signature-ampersand">&</div>
-		<svg class="signature-svg" viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
-			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="signature-text">
-				Dorina
-			</text>
-		</svg>
-	</div>
-</div>
+<header class="site-header">
+	<nav class="header-nav">
+		<h1 class="header-title">Dorina & David</h1>
+		<div class="header-spacer" aria-hidden="true"></div>
+		<div class="header-links">
+			<a href="#dresscode" class="header-link">Dresscode</a>
+			<a href="#program" class="header-link">Program</a>
+			<a href="#visszajelzes" class="header-link header-link--highlight">Visszajelzés</a>
+		</div>
+	</nav>
+</header>
 
 <style>
-	.signature-container {
-		padding: 10rem 1rem 1rem 1rem;
-		text-align: center;
-		max-width: 100%;
+	.site-header {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+		z-index: 100;
+		background-color: rgba(255, 255, 255, 0.98);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+	}
+
+	.header-nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		max-width: 1200px;
 		margin: 0 auto;
-		position: relative;
-		z-index: 2;
+		padding: 1rem 1.5rem;
+		gap: 1.5rem;
+	}
+
+	.header-links {
 		display: flex;
-		justify-content: center;
+		flex-wrap: wrap;
+		gap: 1rem 1.5rem;
 		align-items: center;
+		flex-shrink: 0;
 	}
 
-	.signature-content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0rem;
-	}
-
-	.signature-svg {
-		width: auto;
-		height: 90px;
-		margin: 0;
-		display: block;
-		overflow: visible;
-	}
-
-	.signature-ampersand {
+	.header-link {
 		font-family: 'Cinzel', serif;
-		font-size: 48px;
-		font-weight: 400;
+		font-size: 0.9375rem;
+		font-weight: 500;
 		color: #0d0c16;
-		line-height: 1;
-		margin: 0.25rem 0;
+		text-decoration: none;
+		white-space: nowrap;
+		transition: color 0.2s ease;
 	}
 
-	.signature-text {
+	.header-link:hover {
+		color: #5a6840;
+		text-decoration: underline;
+	}
+
+	.header-link--highlight {
+		color: #5a6840;
+		font-weight: 600;
+		background-color: rgba(90, 104, 64, 0.12);
+		padding: 0.35rem 0.75rem;
+		border-radius: 0.25rem;
+	}
+
+	.header-link--highlight:hover {
+		background-color: rgba(90, 104, 64, 0.2);
+		color: #4a5634;
+	}
+
+	.header-title {
 		font-family: 'Cinzel', serif;
-		font-size: 60px;
-		font-weight: 400;
-		fill: none;
-		stroke: #0d0c16;
-		stroke-width: 2;
-		stroke-linecap: round;
-		stroke-linejoin: round;
-		stroke-dasharray: 2500;
-		stroke-dashoffset: 2500;
-		/* Animation will be triggered by JavaScript when in viewport */
-	}
-	
-	.signature-text.animate {
-		animation: drawStroke 4s ease-in-out forwards;
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: #0d0c16;
+		margin: 0;
+		white-space: nowrap;
+		flex-shrink: 0;
+		pointer-events: none;
 	}
 
-	@keyframes drawStroke {
-		to {
-			stroke-dashoffset: 0;
-		}
+	.header-spacer {
+		flex: 1;
+		min-width: 0;
 	}
 
 	@media (max-width: 768px) {
-		.signature-container {
-			padding: 3rem 1rem 1rem 1rem;
+		.header-nav {
+			flex-wrap: wrap;
+			justify-content: center;
+			text-align: center;
+			padding: 0.75rem 1rem;
 		}
-		.signature-svg {
-			height: 70px;
+
+		.header-links {
+			order: 2;
+			flex: 1 1 100%;
+			justify-content: center;
 		}
-		.signature-text {
-			font-size: 45px;
+
+		.header-title {
+			order: 1;
+			width: 100%;
+			font-size: 1.125rem;
 		}
-		.signature-ampersand {
-			font-size: 36px;
+
+		.header-spacer {
+			display: none;
+		}
+
+		.header-link {
+			font-size: 0.875rem;
 		}
 	}
 
 	@media (max-width: 640px) {
-		.signature-container {
-			padding: 2.5rem 1rem 0.75rem 1rem;
-		}
-		.signature-svg {
-			height: 60px;
-		}
-		.signature-text {
-			font-size: 40px;
-		}
-		.signature-ampersand {
-			font-size: 32px;
+		.header-title {
+			font-size: 1rem;
 		}
 	}
 </style>
-
-<script>
-	function initSignatureAnimation() {
-		const signatureContainer = document.querySelector('.signature-container');
-		const signatureTexts = document.querySelectorAll('.signature-text');
-		
-		if (!signatureContainer || signatureTexts.length === 0) return;
-		
-		// Check if already animated
-		if (signatureTexts[0].classList.contains('animate')) return;
-		
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						signatureTexts.forEach((text) => {
-							text.classList.add('animate');
-						});
-						observer.unobserve(entry.target);
-					}
-				});
-			},
-			{
-				threshold: 0.1, // Trigger when 10% of the element is visible
-				rootMargin: '100px', // Start animation 100px before element enters viewport
-			}
-		);
-		
-		observer.observe(signatureContainer);
-	}
-	
-	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', initSignatureAnimation);
-	} else {
-		initSignatureAnimation();
-	}
-</script>
-

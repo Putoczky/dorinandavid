@@ -1,7 +1,11 @@
 ---
+interface Props {
+	id?: string;
+}
+const { id } = Astro.props;
 ---
 
-<footer class="footer">
+<footer class="footer" id={id}>
 	<div class="footer-content">
 		<hr class="footer-divider" />
 		<div class="contact-wrapper">

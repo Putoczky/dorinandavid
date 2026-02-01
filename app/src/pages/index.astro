@@ -1,17 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/ui/card.astro';
 import Invitation from '../components/Invitation.astro';
 import Signature from '../components/Signature.astro';
+import Timeline from '../components/Timeline.astro';
 import RSVP from '../components/RSVP.astro';
 import Footer from '../components/Footer.astro';
-import { Fragment } from 'astro/jsx-runtime';
 ---
 
 <Layout>
-	<div class="top-leafs">
-		<img src="/top-leafs.png" alt="" class="top-leafs-image" />
-	</div>
 	<Signature />
 	<div class="hero-section">
 		<div class="hero-content">
@@ -21,77 +17,34 @@ import { Fragment } from 'astro/jsx-runtime';
 			<img src="/dorina-david.jpeg" alt="Dávid és Dorina" class="couple-image" />
 		</div>
 	</div>
-	<main class="container mx-auto px-4 max-w-6xl card-container">
-		<div class="cards-grid">
-			<Card svgFile="dom.svg">
-				<div class="card-text-overlay">
-					<h1 class="card-main-title">Szertartás</h1>
-					<p class="card-subtitle">Szegedi Dom 14:00</p>
-					<a href="https://maps.app.goo.gl/UAXikQhsoh4ssaAb8" target="_blank" rel="noopener noreferrer" class="card-map-link">Mutasd a terkepen</a>
+	<section id="dresscode" class="dress-code-section">
+		<div class="dress-code-content">
+			<div class="dress-code-text">
+				<h2 class="dress-code-title">Öltözködés</h2>
+				<p class="dress-code-description">
+					Kérjük, öltözzön ünnepélyesen. A szertartás és a lakodalom hangulatához illeszkedő, elegáns viseletet várunk. Kerüljük a fehér és az elefántcsont színű ruhákat.
+				</p>
+			</div>
+			<div class="dress-code-palette">
+				<p class="dress-code-palette-label">Színpaletta</p>
+				<div class="palette-swatches">
+					<div class="palette-swatch" style="background-color: #5a6840;" title="Zöld"></div>
+					<div class="palette-swatch" style="background-color: rgba(139, 115, 85, 1);" title="Barna"></div>
+					<div class="palette-swatch" style="background-color: #0d0c16;" title="Sötét"></div>
+					<div class="palette-swatch" style="background-color: rgba(139, 115, 85, 0.4);" title="Bézs"></div>
+					<div class="palette-swatch" style="background-color: rgba(90, 104, 64, 0.5);" title="Zöld (világos)"></div>
 				</div>
-				<Fragment slot="back">
-					<div class="card-back-details">
-						<h2 class="card-back-title">Szertartás</h2>
-						<div class="card-back-info">
-							<p class="card-back-location">Szegedi Dóm</p>
-							<p class="card-back-address">Szeged, Dóm tér 15</p>
-							<p class="card-back-time">2026. április 18., 14:00</p>
-							<p class="card-back-description">
-								Az egyházi szertartás a Szegedi Dómban kerül megrendezésre. 
-								Kérjük, hogy időben érkezzenek, hogy mindenki kényelmesen elhelyezkedhessen.
-							</p>
-						</div>
-					</div>
-				</Fragment>
-			</Card>
-			<Card svgFile="csarda.svg">
-				<div class="card-text-overlay">
-					<h1 class="card-main-title">Lakodalom</h1>
-					<p class="card-subtitle">Rozsa Sandor Csarda 18:00</p>
-					<a href="https://maps.app.goo.gl/6S44CtXCyZENNXid8" target="_blank" rel="noopener noreferrer" class="card-map-link">Mutasd a terkepen</a>
-				</div>
-				<Fragment slot="back">
-					<div class="card-back-details">
-						<h2 class="card-back-title">Lakodalom</h2>
-						<div class="card-back-info">
-							<p class="card-back-location">Rózsa Sándor Csárda</p>
-							<p class="card-back-address">Szeged, Rózsa Sándor út 1.</p>
-							<p class="card-back-time">2026. április 18., 18:00</p>
-							<p class="card-back-description">
-								A szertartást követően szeretettel várunk benneteket a Rózsa Sándor Csárdában, 
-								ahol együtt ünnepelhetjük ezt a különleges napot.
-							</p>
-						</div>
-					</div>
-				</Fragment>
-			</Card>
+			</div>
 		</div>
-	</main>
-	<div class="mt-16 pb-32 relative z-[10]">
+	</section>
+	<Timeline />
+	<div id="visszajelzes" class="mt-16 pb-32 relative z-[10]">
 		<RSVP />
 	</div>
 	<Footer />
 </Layout>
 
 <style>
-	.top-leafs {
-		position: absolute !important;
-		top: 0;
-		left: 0;
-		right: 0;
-		width: 100%;
-		max-width: 100vw;
-		z-index: 1;
-		pointer-events: none;
-		overflow: hidden;
-	}
-
-	.top-leafs-image {
-		width: 100%;
-		height: auto;
-		display: block;
-	}
-
 	.hero-section {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
@@ -99,7 +52,7 @@ import { Fragment } from 'astro/jsx-runtime';
 		align-items: center;
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 1rem 2rem 2rem 2rem;
+		padding: 5rem 2rem 2rem 2rem;
 		position: relative;
 		z-index: 2;
 	}
@@ -131,7 +84,12 @@ import { Fragment } from 'astro/jsx-runtime';
 		.hero-section {
 			grid-template-columns: 1fr;
 			gap: 2rem;
-			padding: 1rem 1rem 2rem 1rem;
+			padding: 5.5rem 1rem 2rem 1rem;
+		}
+	}
+	@media (max-width: 768px) {
+		.hero-section {
+			padding-top: 6rem;
 		}
 
 		.hero-image {
@@ -146,162 +104,113 @@ import { Fragment } from 'astro/jsx-runtime';
 
 	@media (max-width: 640px) {
 		.hero-section {
-			padding: 1rem 1rem 1.5rem 1rem;
+			padding: 6rem 1rem 1.5rem 1rem;
 		}
 	}
 
-	.card-container {
-		overflow: visible;
-		width: 100%;
-		max-width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 60vh;
-		padding: 2rem 1rem;
-	}
-
-	.cards-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 2rem;
-		width: 100%;
-		max-width: 1100px;
+	.dress-code-section {
+		max-width: 1200px;
 		margin: 0 auto;
-		align-items: stretch;
+		padding: 3rem 2rem;
+		position: relative;
+		z-index: 2;
 	}
 
-	@media (max-width: 768px) {
-		.cards-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.card-container {
-			min-height: auto;
-			padding: 2rem 1rem;
-		}
+	.dress-code-content {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		gap: 3rem;
+		align-items: center;
+		border: 1px solid rgba(139, 115, 85, 0.2);
+		border-radius: 0.5rem;
+		padding: 2rem 2.5rem;
+		background-color: rgba(139, 115, 85, 0.05);
 	}
 
-	.card-text-overlay {
-		display: flex;
-		flex-direction: column;
-		gap: 0.5rem;
-	}
-
-	.card-main-title {
-		font-size: 3rem;
-		font-weight: 700;
-		line-height: 1.1;
-		letter-spacing: -0.02em;
-		color: #0d0c16;
-		margin: 0;
-	}
-
-	.card-subtitle {
-		font-size: 1.25rem;
-		font-weight: 400;
-		line-height: 1.5;
-		color: #0d0c16;
-		margin: 0;
-	}
-
-	.card-map-link {
-		font-size: 1rem;
-		font-weight: 500;
-		color: rgba(90, 104, 64, 1);
-		text-decoration: underline;
-		text-decoration-color: rgba(90, 104, 64, 0.5);
-		text-underline-offset: 3px;
-		margin-top: 0.25rem;
-		transition: color 0.2s ease, text-decoration-color 0.2s ease;
-	}
-
-	.card-map-link:hover {
-		color: rgba(90, 104, 64, 0.8);
-		text-decoration-color: rgba(90, 104, 64, 0.8);
-	}
-
-	@media (max-width: 640px) {
-		.card-main-title {
-			font-size: 2.25rem;
-		}
-		
-		.card-subtitle {
-			font-size: 1.125rem;
-		}
-
-		.card-map-link {
-			font-size: 0.9375rem;
-		}
-	}
-
-	.card-back-details {
-		width: 100%;
-		max-width: 100%;
-	}
-
-	.card-back-title {
-		font-size: 2.5rem;
-		font-weight: 700;
-		line-height: 1.2;
-		color: #0d0c16;
-		margin: 0 0 2rem 0;
+	.dress-code-title {
 		font-family: 'Cinzel', serif;
+		font-size: 2rem;
+		font-weight: 600;
+		color: #0d0c16;
+		margin: 0 0 1rem 0;
 	}
 
-	.card-back-info {
+	.dress-code-description {
+		font-family: 'Cinzel', serif;
+		font-size: 1.125rem;
+		line-height: 1.6;
+		color: rgba(13, 12, 22, 0.85);
+		margin: 0;
+		max-width: 520px;
+	}
+
+	.dress-code-palette {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 		gap: 1rem;
 	}
 
-	.card-back-location {
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: #0d0c16;
-		margin: 0;
-	}
-
-	.card-back-address {
-		font-size: 1.125rem;
-		color: rgba(13, 12, 22, 0.8);
-		margin: 0;
-	}
-
-	.card-back-time {
-		font-size: 1.25rem;
+	.dress-code-palette-label {
+		font-family: 'Cinzel', serif;
+		font-size: 0.875rem;
 		font-weight: 500;
-		color: rgba(139, 115, 85, 1);
-		margin: 0.5rem 0;
+		color: rgba(13, 12, 22, 0.7);
+		margin: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 	}
 
-	.card-back-description {
-		font-size: 1rem;
-		line-height: 1.6;
-		color: rgba(13, 12, 22, 0.7);
-		margin: 1rem 0 0 0;
-		max-width: 500px;
+	.palette-swatches {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		justify-content: center;
+	}
+
+	.palette-swatch {
+		width: 3rem;
+		height: 3rem;
+		border-radius: 0.375rem;
+		border: 1px solid rgba(13, 12, 22, 0.15);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+		flex-shrink: 0;
+	}
+
+	@media (max-width: 768px) {
+		.dress-code-content {
+			grid-template-columns: 1fr;
+			text-align: center;
+			padding: 1.5rem 1.5rem;
+		}
+
+		.dress-code-description {
+			max-width: none;
+			margin: 0 auto;
+		}
+
+		.dress-code-palette {
+			order: -1;
+		}
 	}
 
 	@media (max-width: 640px) {
-		.card-back-title {
-			font-size: 2rem;
+		.dress-code-section {
+			padding: 2rem 1rem;
 		}
 
-		.card-back-location {
-			font-size: 1.25rem;
+		.dress-code-title {
+			font-size: 1.5rem;
 		}
 
-		.card-back-address {
+		.dress-code-description {
 			font-size: 1rem;
 		}
 
-		.card-back-time {
-			font-size: 1.125rem;
-		}
-
-		.card-back-description {
-			font-size: 0.9375rem;
+		.palette-swatch {
+			width: 2.5rem;
+			height: 2.5rem;
 		}
 	}
+
 </style>
