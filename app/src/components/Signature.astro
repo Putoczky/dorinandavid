@@ -2,21 +2,39 @@
 ---
 
 <div class="signature-container">
-	<svg class="signature-svg" viewBox="0 0 600 90" xmlns="http://www.w3.org/2000/svg">
-		<text x="0" y="50%" dominant-baseline="middle" class="signature-text">
-			Dávid és Dorina
-		</text>
-	</svg>
+	<div class="signature-content">
+		<svg class="signature-svg" viewBox="0 0 200 90" xmlns="http://www.w3.org/2000/svg">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="signature-text">
+				David
+			</text>
+		</svg>
+		<div class="signature-ampersand">&</div>
+		<svg class="signature-svg" viewBox="0 0 300 90" xmlns="http://www.w3.org/2000/svg">
+			<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="signature-text">
+				Dorina
+			</text>
+		</svg>
+	</div>
 </div>
 
 <style>
 	.signature-container {
-		padding: 1.5rem 1rem;
-		text-align: left;
-		max-width: 800px;
+		padding: 10rem 1rem 1rem 1rem;
+		text-align: center;
+		max-width: 100%;
 		margin: 0 auto;
 		position: relative;
 		z-index: 2;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.signature-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0rem;
 	}
 
 	.signature-svg {
@@ -24,10 +42,20 @@
 		height: 90px;
 		margin: 0;
 		display: block;
+		overflow: visible;
+	}
+
+	.signature-ampersand {
+		font-family: 'Cinzel', serif;
+		font-size: 48px;
+		font-weight: 400;
+		color: #0d0c16;
+		line-height: 1;
+		margin: 0.25rem 0;
 	}
 
 	.signature-text {
-		font-family: 'Style Script', cursive;
+		font-family: 'Cinzel', serif;
 		font-size: 60px;
 		font-weight: 400;
 		fill: none;
@@ -51,22 +79,32 @@
 	}
 
 	@media (max-width: 768px) {
+		.signature-container {
+			padding: 3rem 1rem 1rem 1rem;
+		}
 		.signature-svg {
 			height: 70px;
-			max-width: 400px;
 		}
 		.signature-text {
 			font-size: 45px;
 		}
+		.signature-ampersand {
+			font-size: 36px;
+		}
 	}
 
 	@media (max-width: 640px) {
+		.signature-container {
+			padding: 2.5rem 1rem 0.75rem 1rem;
+		}
 		.signature-svg {
 			height: 60px;
-			max-width: 350px;
 		}
 		.signature-text {
 			font-size: 40px;
+		}
+		.signature-ampersand {
+			font-size: 32px;
 		}
 	}
 </style>
@@ -74,18 +112,20 @@
 <script>
 	function initSignatureAnimation() {
 		const signatureContainer = document.querySelector('.signature-container');
-		const signatureText = document.querySelector('.signature-text');
+		const signatureTexts = document.querySelectorAll('.signature-text');
 		
-		if (!signatureContainer || !signatureText) return;
+		if (!signatureContainer || signatureTexts.length === 0) return;
 		
 		// Check if already animated
-		if (signatureText.classList.contains('animate')) return;
+		if (signatureTexts[0].classList.contains('animate')) return;
 		
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						signatureText.classList.add('animate');
+						signatureTexts.forEach((text) => {
+							text.classList.add('animate');
+						});
 						observer.unobserve(entry.target);
 					}
 				});

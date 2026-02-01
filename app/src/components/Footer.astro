@@ -1,12 +1,109 @@
 ---
 ---
 
-<footer class="w-full -mt-24">
-	<img src="/top-leafs.png" alt="" class="w-full h-auto block mirrored" />
+<footer class="footer">
+	<div class="footer-content">
+		<hr class="footer-divider" />
+		<div class="contact-wrapper">
+			<div class="contact-person">
+				<h3 class="contact-name">Szabó Dorina</h3>
+				<p class="contact-email">
+					email: <a href="mailto:dorina@dorinandavid.wedding">dorina@dorinandavid.wedding</a>
+				</p>
+			</div>
+			<div class="contact-person">
+				<h3 class="contact-name">Putoczky Dávid</h3>
+				<p class="contact-email">
+					email: <a href="mailto:david@dorinandavid.wedding">david@dorinandavid.wedding</a>
+				</p>
+			</div>
+		</div>
+	</div>
 </footer>
 
 <style>
-	.mirrored {
-		transform: scaleY(-1);
+	.footer {
+		width: 100%;
+		padding: 3rem 2rem;
+		background-color: var(--color-bg-white);
+		position: relative;
+		z-index: 1;
+	}
+
+	.footer-content {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.footer-divider {
+		width: 100%;
+		border: none;
+		border-top: 1px solid rgba(13, 12, 22, 0.2);
+		margin: 0;
+	}
+
+	.contact-wrapper {
+		display: flex;
+		justify-content: center;
+		gap: 4rem;
+		flex-wrap: wrap;
+		width: 100%;
+	}
+
+	.contact-person {
+		text-align: center;
+	}
+
+	.contact-name {
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--color-text-primary);
+		margin: 0 0 0.5rem 0;
+		font-family: 'Cinzel', serif;
+	}
+
+	.contact-email {
+		font-size: 1rem;
+		color: var(--color-text-secondary);
+		margin: 0;
+		font-family: 'Cinzel', serif;
+	}
+
+	.contact-email a {
+		color: var(--color-primary);
+		text-decoration: none;
+		transition: color 0.2s ease;
+	}
+
+	.contact-email a:hover {
+		color: var(--color-primary-hover);
+		text-decoration: underline;
+	}
+
+	@media (max-width: 640px) {
+		.footer {
+			padding: 2rem 1rem;
+		}
+
+		.footer-content {
+			gap: 1.5rem;
+		}
+
+		.contact-wrapper {
+			flex-direction: column;
+			gap: 2rem;
+		}
+
+		.contact-name {
+			font-size: 1.25rem;
+		}
+
+		.contact-email {
+			font-size: 0.9375rem;
+		}
 	}
 </style>

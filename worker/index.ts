@@ -76,6 +76,7 @@ function mapAirtableRecord(record: any): Guest {
 		submittedAt: (record.fields['Submitted At'] as string) || undefined,
 		szertartas: (record.fields.Szertartas as boolean) ?? false,
 		lakodalom: (record.fields.Lakodalom as boolean) ?? false,
+		transfer: (record.fields.Transfer as boolean) ?? false,
 	};
 }
 
@@ -88,16 +89,18 @@ const route = app.post(
 		const { name } = c.req.valid('json') as VerifyNameRequest;
 
 		try {
-			// Find guest by name - search in Full name column
+			// Find guest by name - exact match on Full name column (case-insensitive)
+			// Escape quotes in the name to prevent formula injection
+			const escapedName = name.trim().replace(/"/g, '""');
 			const searchUrl = `${TABLE_NAME}?filterByFormula=${encodeURIComponent(
-				`SEARCH(LOWER("${name.toLowerCase()}"), LOWER({Full name}))`
+				`LOWER({Full name}) = LOWER("${escapedName}")`
 			)}`;
 			const searchResponse = await airtableRequest(env, 'GET', searchUrl);
 			const searchData = (await searchResponse.json()) as { records?: any[] };
 
 			if (!searchData.records || searchData.records.length === 0) {
 				return c.json(
-					{ error: 'Name not found in guest list', found: false },
+					{ error: 'Sajnos ilyen nevű vendég nem található a listán', found: false },
 					404
 				);
 			}
@@ -120,14 +123,16 @@ const route = app.post(
 			
 			if (!familyRecordResponse.ok) {
 				const errorText = await familyRecordResponse.text();
-				throw new Error(`Failed to fetch family record: ${errorText}`);
+				throw new Error(`Sajnos nem sikerült a család adatait lekérdezni: ${errorText}`);
 			}
 			
 			const familyRecordData = (await familyRecordResponse.json()) as { fields?: any };
 			const memberIds = familyRecordData.fields?.['Members'] as string[] | undefined;
+			const familyEmail = (familyRecordData.fields?.['Email'] as string) || undefined;
+			const familyNotes = (familyRecordData.fields?.['Notes'] as string) || undefined;
 			
 			if (!memberIds || memberIds.length === 0) {
-				throw new Error('Family record has no members');
+				throw new Error('Sajnos a család tagjai nem találhatók a listán');
 			}
 			
 			// Fetch all guest records using their IDs with OR() filter
@@ -154,6 +159,9 @@ const route = app.post(
 				found: true,
 				guest,
 				familyMembers,
+				familyEmail,
+				familyId: familyRecordId,
+				familyNotes,
 			};
 
 			return c.json(response);
@@ -170,20 +178,16 @@ const route = app.post(
 	zValidator('json', RSVPRequestSchema),
 	async (c): Promise<Response> => {
 		const env = c.env;
-		const { guestId, attending, email, phone, dietaryRestrictions, notes, szertartas, lakodalom } = c.req.valid('json') as RSVPRequest;
+		const { guestId, attending, email, phone, dietaryRestrictions, notes, szertartas, lakodalom, transfer, familyEmail, familyId, familyNotes } = c.req.valid('json') as RSVPRequest;
 
 		try {
 			const fields: Record<string, any> = {};
-			if (attending !== undefined) fields.Attending = attending;
-			if (email !== undefined && email !== '') fields.Email = email;
-			if (phone !== undefined && phone !== '') fields.Phone = phone;
-			if (dietaryRestrictions !== undefined && dietaryRestrictions !== '')
-				fields['Dietary Restrictions'] = dietaryRestrictions;
-			if (notes !== undefined && notes !== '') fields.Notes = notes;
 			if (szertartas !== undefined) fields.Szertartas = szertartas;
 			if (lakodalom !== undefined) fields.Lakodalom = lakodalom;
-			fields['Submitted At'] = new Date().toISOString();
+			if (dietaryRestrictions !== undefined) fields['Dietary Restrictions'] = dietaryRestrictions;
+			if (transfer !== undefined) fields.Transfer = transfer;
 
+			// Update guest record
 			const updateResponse = await airtableRequest(env, 'PATCH', TABLE_NAME, {
 				records: [
 					{
@@ -203,6 +207,33 @@ const route = app.post(
 				throw new Error('No records returned from update');
 			}
 			const updatedGuest = mapAirtableRecord(updateData.records[0]);
+
+			// Update family email and notes if familyId is provided
+			if (familyId) {
+				const familyFields: Record<string, any> = {};
+				if (familyEmail) {
+					familyFields.Email = familyEmail;
+				}
+				if (familyNotes !== undefined) {
+					familyFields.Notes = familyNotes;
+				}
+
+				if (Object.keys(familyFields).length > 0) {
+					const familyUpdateResponse = await airtableRequest(env, 'PATCH', FAMILIES_TABLE_NAME, {
+						records: [
+							{
+								id: familyId,
+								fields: familyFields,
+							},
+						],
+					});
+
+					if (!familyUpdateResponse.ok) {
+						console.error('Failed to update family data, but guest update succeeded');
+						// Don't fail the whole request if family update fails
+					}
+				}
+			}
 
 			const response: RSVPResponse = {
 				success: true,

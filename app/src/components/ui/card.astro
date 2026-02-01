@@ -16,7 +16,7 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 		<!-- Front side -->
 		<div class="card card-front">
 			<!-- SVG Background -->
-			<div class="svg-background">
+			<div class="svg-background" data-svg-file={svgFile}>
 				<AnimatedSVG svgFile={svgFile} />
 			</div>
 			
@@ -35,7 +35,7 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 				<span>Részletek</span>
 			</button>
 			
-			<!-- Leafy decoration - top left corner, running along top edge -->
+			<!-- Leafy decoration - top left corner, running along top edge
 			<img 
 				src="/leafy.png" 
 				alt="" 
@@ -45,7 +45,7 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 				src="/leafy.png" 
 				alt="" 
 				class="leafy-decoration leafy-bottom-right"
-			/>
+			/> -->
 		</div>
 		
 		<!-- Back side -->
@@ -72,12 +72,16 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 		width: 100%;
 		height: 100%;
 		perspective: 1000px;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.card-flip-container {
 		position: relative;
 		width: 100%;
 		height: 100%;
+		flex: 1;
+		display: flex;
 		transform-style: preserve-3d;
 		transition: transform 0.6s;
 	}
@@ -97,7 +101,7 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 			inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 		padding: 0;
 		overflow: visible;
-		min-height: 500px;
+		height: 100%;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -110,6 +114,8 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 		position: relative;
 		pointer-events: auto;
 		z-index: 10;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.card-back {
@@ -129,20 +135,19 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 	}
 
 	.svg-background {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		position: relative;
 		z-index: 1;
 		opacity: 0.3;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 0.75rem 0.75rem 2rem 0.75rem;
+		padding: 0.75rem;
 		pointer-events: none;
 		overflow: hidden;
-		border-radius: 0.5rem;
+		border-radius: 0.5rem 0.5rem 0 0;
+		flex-shrink: 0;
+		height: 300px;
+		max-height: 300px;
 	}
 
 	.svg-background :global([data-svg-container]) {
@@ -157,19 +162,18 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 	.svg-background :global(.svg-draw-animated) {
 		width: 100%;
 		height: 100%;
-		max-width: none;
-		max-height: none;
+		max-width: 100%;
+		max-height: 100%;
 		object-fit: contain;
 	}
 
 	.card-content-overlay {
 		position: relative;
 		z-index: 2;
-		flex: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-end;
 		padding: 2rem;
+		flex-shrink: 0;
 	}
 
 	.leafy-decoration {
@@ -217,12 +221,13 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 		align-items: center;
 		gap: 0.5rem;
 		padding: 0.75rem 1.25rem;
-		background-color: rgba(139, 115, 85, 0.9);
+		background-color: rgba(90, 104, 64, 0.9);
 		color: #ffffff;
 		border: none;
 		border-radius: 0.375rem;
 		font-size: 0.875rem;
 		font-weight: 500;
+		font-family: 'Cinzel', serif;
 		cursor: pointer;
 		transition: all 0.2s ease;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -230,7 +235,7 @@ const { class: className, svgFile = 'dom.svg', backContent } = Astro.props;
 	}
 
 	.flip-button:hover {
-		background-color: rgba(139, 115, 85, 1);
+		background-color: rgba(90, 104, 64, 1);
 		transform: translateY(-2px);
 		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 	}

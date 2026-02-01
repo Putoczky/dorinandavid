@@ -30,6 +30,16 @@ const client = hc<AppType>(WORKER_URL);
 const $verifyName = client['verify-name'].$post;
 const $rsvp = client.rsvp.$post;
 
+/**
+ * Standalone function to submit RSVP (for concurrent calls)
+ * This can be used directly without React Query hooks
+ */
+export async function submitRSVP(data: RSVPRequest): Promise<RSVPResponse> {
+	const res = await $rsvp({ json: data });
+	if (!res.ok) throw res;
+	return res.json() as Promise<RSVPResponse>;
+}
+
 // React Query hooks for API operations
 
 /**

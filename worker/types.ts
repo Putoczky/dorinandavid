@@ -19,6 +19,7 @@ export const GuestSchema = z.object({
 	submittedAt: z.string().optional(),
 	szertartas: z.boolean().optional(),
 	lakodalom: z.boolean().optional(),
+	transfer: z.boolean().optional(),
 });
 
 export type Guest = z.infer<typeof GuestSchema>;
@@ -37,6 +38,10 @@ export const RSVPRequestSchema = z.object({
 	notes: z.string().optional().or(z.literal('')),
 	szertartas: z.boolean().optional(),
 	lakodalom: z.boolean().optional(),
+	transfer: z.boolean().optional(),
+	familyEmail: z.string().email('Érvényes email cím szükséges'),
+	familyId: z.string().optional(),
+	familyNotes: z.string().optional(),
 });
 
 // Response schemas
@@ -45,6 +50,9 @@ export const VerifyNameResponseSchema = z.object({
 	found: z.boolean(),
 	guest: GuestSchema,
 	familyMembers: z.array(GuestSchema),
+	familyEmail: z.string().email().optional(),
+	familyId: z.string().optional(),
+	familyNotes: z.string().optional(),
 });
 
 export const RSVPResponseSchema = z.object({
