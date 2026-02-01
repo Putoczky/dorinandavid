@@ -6,20 +6,31 @@ const { id } = Astro.props;
 ---
 
 <footer class="footer" id={id}>
-	<div class="footer-content">
-		<hr class="footer-divider" />
-		<div class="contact-wrapper">
-			<div class="contact-person">
-				<h3 class="contact-name">Szabó Dorina</h3>
-				<p class="contact-email">
-					email: <a href="mailto:dorina@dorinandavid.wedding">dorina@dorinandavid.wedding</a>
-				</p>
+	<div class="footer-inner">
+		<div class="footer-grid">
+			<div class="footer-block footer-block--locations">
+				<span class="footer-label">Helyszínek</span>
+				<div class="footer-locations">
+					<div class="footer-location-block">
+						<p class="footer-location">Szegedi Dóm</p>
+						<a href="https://www.google.com/maps/search/?api=1&query=Szegedi+Dóm,+Szeged,+Hungary" class="footer-btn" target="_blank" rel="noopener noreferrer">Megtekintés a térképen</a>
+					</div>
+					<div class="footer-location-block">
+						<p class="footer-location">Rózsa Sándor Csárda</p>
+						<a href="https://www.google.com/maps/search/?api=1&query=Rózsa+Sándor+Csárda,+Zsombó,+Hungary" class="footer-btn" target="_blank" rel="noopener noreferrer">Megtekintés a térképen</a>
+					</div>
+				</div>
 			</div>
-			<div class="contact-person">
-				<h3 class="contact-name">Putoczky Dávid</h3>
-				<p class="contact-email">
-					email: <a href="mailto:david@dorinandavid.wedding">david@dorinandavid.wedding</a>
-				</p>
+			<div class="footer-block footer-block--date">
+				<span class="footer-label">Dátum</span>
+				<p class="footer-date">Szeged, 2026. Április 18.</p>
+				<a href="/calendar.ics" class="footer-btn" download>
+					Felveszem a naptárba
+				</a>
+			</div>
+			<div class="footer-block footer-block--contact">
+				<span class="footer-label">Kapcsolat</span>
+				<a href="mailto:info@dorinandavid.wedding" class="footer-email">info@dorinandavid.wedding</a>
 			</div>
 		</div>
 	</div>
@@ -28,86 +39,139 @@ const { id } = Astro.props;
 <style>
 	.footer {
 		width: 100%;
-		padding: 3rem 2rem;
-		background-color: var(--color-bg-white);
+		padding: 4rem 0;
+		background: #0f0f0f;
+		color: rgba(255, 255, 255, 0.9);
 		position: relative;
 		z-index: 1;
 	}
 
-	.footer-content {
+	.footer-inner {
 		max-width: 1200px;
+		width: 100%;
 		margin: 0 auto;
+		padding: 0 0.875rem;
+	}
+
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 3rem 2rem;
+		align-items: start;
+	}
+
+	.footer-block {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 2rem;
+		gap: 1rem;
 	}
 
-	.footer-divider {
-		width: 100%;
-		border: none;
-		border-top: 1px solid rgba(13, 12, 22, 0.2);
-		margin: 0;
-	}
-
-	.contact-wrapper {
-		display: flex;
-		justify-content: center;
-		gap: 4rem;
-		flex-wrap: wrap;
-		width: 100%;
-	}
-
-	.contact-person {
-		text-align: center;
-	}
-
-	.contact-name {
-		font-size: 1.5rem;
+	.footer-label {
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+		font-size: 0.6875rem;
 		font-weight: 600;
-		color: var(--color-text-primary);
-		margin: 0 0 0.5rem 0;
-		font-family: 'Cinzel', serif;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.5);
 	}
 
-	.contact-email {
-		font-size: 1rem;
-		color: var(--color-text-secondary);
+	.footer-locations {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+	}
+
+	.footer-location-block {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.footer-location {
 		margin: 0;
-		font-family: 'Cinzel', serif;
+		font-size: 1rem;
+		color: rgba(255, 255, 255, 0.9);
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 	}
 
-	.contact-email a {
-		color: var(--color-primary);
+	.footer-date {
+		margin: 0;
+		font-size: 1rem;
+		color: rgba(255, 255, 255, 0.9);
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	}
+
+	.footer-btn {
+		display: inline-block;
+		padding: 0.4rem 0.9rem;
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+		font-size: 0.75rem;
+		font-weight: 500;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.9);
+		background: transparent;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		border-radius: 2px;
+		text-decoration: none;
+		transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+	}
+
+	.footer-btn:hover {
+		color: #ffffff;
+		border-color: rgba(255, 255, 255, 0.6);
+		background: rgba(255, 255, 255, 0.05);
+		text-decoration: none;
+	}
+
+	.footer-email {
+		font-size: 1rem;
+		color: rgba(255, 255, 255, 0.9);
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 		text-decoration: none;
 		transition: color 0.2s ease;
 	}
 
-	.contact-email a:hover {
-		color: var(--color-primary-hover);
+	.footer-email:hover {
+		color: #ffffff;
 		text-decoration: underline;
+	}
+
+	@media (max-width: 768px) {
+		.footer {
+			padding: 3rem 0;
+		}
+
+		.footer-inner {
+			padding: 0 0.625rem;
+		}
+
+		.footer-grid {
+			grid-template-columns: 1fr;
+			gap: 2.5rem;
+			text-align: center;
+		}
+
+		.footer-block {
+			align-items: center;
+		}
+
+		.footer-location-block {
+			align-items: center;
+		}
 	}
 
 	@media (max-width: 640px) {
 		.footer {
-			padding: 2rem 1rem;
+			padding: 2.5rem 0;
 		}
 
-		.footer-content {
-			gap: 1.5rem;
+		.footer-inner {
+			padding: 0 0.5rem;
 		}
 
-		.contact-wrapper {
-			flex-direction: column;
+		.footer-grid {
 			gap: 2rem;
-		}
-
-		.contact-name {
-			font-size: 1.25rem;
-		}
-
-		.contact-email {
-			font-size: 0.9375rem;
 		}
 	}
 </style>

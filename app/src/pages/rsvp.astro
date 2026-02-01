@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Signature from '../components/Signature.astro';
+import Footer from '../components/Footer.astro';
+import RSVP from '../components/RSVP.astro';
+---
+
+<Layout>
+	<Signature currentPage="rsvp" />
+	<main class="rsvp-page">
+		<RSVP />
+	</main>
+	<Footer />
+</Layout>
+
+<style>
+	.rsvp-page {
+		min-height: calc(100vh - 8rem);
+		padding: 14rem 1.5rem 4rem;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	@media (max-width: 768px) {
+		.rsvp-page {
+			padding: 14rem 1rem 3rem;
+		}
+	}
+</style>

@@ -1,0 +1,14 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Dorina & David Wedding//HU
+BEGIN:VEVENT
+UID:dorina-david-wedding-2026@dorinandavid.wedding
+DTSTAMP:20250101T000000Z
+DTSTART:20260418T150000
+DTEND:20260419T010000
+SUMMARY:Dorina & Dávid esküvő
+DESCRIPTION:Szertartás: Szegedi Dóm, Szeged\nLakodalom: Rózsa Sándor Csárda, Zsombó
+LOCATION:Szegedi Dóm, Szeged, Hungary
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

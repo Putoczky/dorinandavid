@@ -14,7 +14,7 @@ const events = [
 
 <section id="program" class="timeline-section">
 	<div class="timeline-inner">
-		<h2 class="timeline-heading">Program</h2>
+		<h2 class="timeline-heading">Programok</h2>
 		<div class="timeline">
 			<div class="timeline-line" aria-hidden="true"></div>
 			{events.map((event, i) => (
@@ -97,7 +97,7 @@ const events = [
 	.timeline-section {
 		max-width: 800px;
 		margin: 0 auto;
-		padding: 4rem 1.5rem;
+		padding: 4rem 1.5rem 2rem;
 		position: relative;
 		z-index: 2;
 	}
@@ -107,12 +107,14 @@ const events = [
 	}
 
 	.timeline-heading {
-		font-family: 'Cinzel', serif;
-		font-size: 2rem;
-		font-weight: 600;
-		color: #0d0c16;
-		margin: 0 0 3rem 0;
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+		font-size: 2.25rem;
+		text-transform: uppercase;
+		font-weight: 400;
+		color: #0a0a0a;
+		margin: 0 0 2rem 0;
 		text-align: center;
+		letter-spacing: 0.02em;
 	}
 
 	.timeline {
@@ -128,7 +130,7 @@ const events = [
 		top: 0;
 		bottom: 0;
 		width: 2px;
-		background: #0d0c16;
+		background: #0a0a0a;
 		transform: translateX(-50%);
 		border-radius: 1px;
 	}
@@ -179,7 +181,7 @@ const events = [
 		width: 2.5rem;
 		height: 2.5rem;
 		flex-shrink: 0;
-		color: #0d0c16;
+		color: #0a0a0a;
 		opacity: 0.85;
 	}
 
@@ -196,25 +198,25 @@ const events = [
 	}
 
 	.timeline-time {
-		font-family: 'Cinzel', serif;
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 		font-size: 0.875rem;
 		font-weight: 600;
-		color: rgba(90, 104, 64, 1);
+		color: #525252;
 		letter-spacing: 0.02em;
 	}
 
 	.timeline-label {
-		font-family: 'Cinzel', serif;
+		font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
 		font-size: 1.125rem;
 		font-weight: 500;
-		color: #0d0c16;
+		color: #0a0a0a;
 	}
 
 	.timeline-dot {
 		width: 12px;
 		height: 12px;
 		border-radius: 50%;
-		background: #0d0c16;
+		background: #0a0a0a;
 		border: none;
 		flex-shrink: 0;
 		grid-row: 1;
@@ -258,8 +260,8 @@ const events = [
 		}
 
 		.timeline-heading {
-			font-size: 1.5rem;
-			margin-bottom: 2rem;
+			font-size: 1.875rem;
+			margin-bottom: 1.5rem;
 		}
 
 		.timeline-section {
@@ -268,6 +270,10 @@ const events = [
 	}
 
 	@media (max-width: 640px) {
+		.timeline-heading {
+			font-size: 1.625rem;
+		}
+
 		.timeline-label {
 			font-size: 1rem;
 		}

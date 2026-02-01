@@ -1,216 +1,158 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Invitation from '../components/Invitation.astro';
 import Signature from '../components/Signature.astro';
-import Timeline from '../components/Timeline.astro';
-import RSVP from '../components/RSVP.astro';
 import Footer from '../components/Footer.astro';
+import Invitation from '../components/Invitation.astro';
+import DresscodeSection from '../components/DresscodeSection.astro';
+import Timeline from '../components/Timeline.astro';
 ---
 
 <Layout>
-	<Signature />
-	<div class="hero-section">
-		<div class="hero-content">
-			<Invitation />
-		</div>
-		<div class="hero-image">
-			<img src="/dorina-david.jpeg" alt="Dávid és Dorina" class="couple-image" />
-		</div>
-	</div>
-	<section id="dresscode" class="dress-code-section">
-		<div class="dress-code-content">
-			<div class="dress-code-text">
-				<h2 class="dress-code-title">Öltözködés</h2>
-				<p class="dress-code-description">
-					Kérjük, öltözzön ünnepélyesen. A szertartás és a lakodalom hangulatához illeszkedő, elegáns viseletet várunk. Kerüljük a fehér és az elefántcsont színű ruhákat.
-				</p>
-			</div>
-			<div class="dress-code-palette">
-				<p class="dress-code-palette-label">Színpaletta</p>
-				<div class="palette-swatches">
-					<div class="palette-swatch" style="background-color: #5a6840;" title="Zöld"></div>
-					<div class="palette-swatch" style="background-color: rgba(139, 115, 85, 1);" title="Barna"></div>
-					<div class="palette-swatch" style="background-color: #0d0c16;" title="Sötét"></div>
-					<div class="palette-swatch" style="background-color: rgba(139, 115, 85, 0.4);" title="Bézs"></div>
-					<div class="palette-swatch" style="background-color: rgba(90, 104, 64, 0.5);" title="Zöld (világos)"></div>
+	<Signature currentPage="home" />
+	<main class="single-page">
+		<section id="home" class="page-section page-section--hero">
+			<div class="hero-images">
+				<div class="hero-image hero-image--primary">
+					<img src="/kép4.jpg" alt="" class="hero-img" loading="eager" fetchpriority="high" />
+				</div>
+				<div class="hero-image hero-image--secondary">
+					<img src="/kép3.jpg" alt="" class="hero-img" loading="eager" />
 				</div>
 			</div>
+		</section>
+
+		<div class="page-separator" aria-hidden="true"></div>
+
+		<section id="meghivo" class="page-section">
+			<Invitation />
+		</section>
+
+		<div class="page-separator" aria-hidden="true"></div>
+
+		<section id="dresscode" class="page-section">
+			<DresscodeSection />
+		</section>
+
+		<div class="page-separator" aria-hidden="true"></div>
+
+		<div class="page-section page-section--last">
+			<Timeline />
 		</div>
-	</section>
-	<Timeline />
-	<div id="visszajelzes" class="mt-16 pb-32 relative z-[10]">
-		<RSVP />
-	</div>
+	</main>
 	<Footer />
 </Layout>
 
+<script>
+	function updateActiveLink() {
+		const hash = window.location.hash.slice(1) || 'home';
+		document.querySelectorAll('.header-link').forEach((link) => {
+			const href = link.getAttribute('href') || '';
+			const isActive = href === '#' + hash || (hash === 'home' && href === '/');
+			link.classList.toggle('header-link--active', isActive);
+		});
+	}
+	updateActiveLink();
+	window.addEventListener('hashchange', updateActiveLink);
+</script>
+
 <style>
-	.hero-section {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 3rem;
-		align-items: center;
-		max-width: 1200px;
+	.single-page {
+		width: 100%;
+		max-width: 1400px;
 		margin: 0 auto;
-		padding: 5rem 2rem 2rem 2rem;
-		position: relative;
-		z-index: 2;
+		padding-top: 11.5rem;
+		padding-bottom: 1rem;
+		overflow-x: hidden;
 	}
 
-	.hero-content {
-		display: flex;
-		flex-direction: column;
-		gap: 0;
+	.page-section {
+		padding: 4rem 1.5rem;
+		min-height: 50vh;
+	}
+
+	.page-section--hero {
+		padding-top: 1.5rem;
+		padding-bottom: 4rem;
+	}
+
+	.page-section--last {
+		padding-bottom: 2rem;
+	}
+
+	.page-separator {
+		width: 100%;
+		max-width: 24rem;
+		height: 1px;
+		margin: 0 auto;
+		background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0.2) 70%, transparent);
+		flex-shrink: 0;
+	}
+
+	/* Hero: two main images */
+	.hero-images {
+		display: grid;
+		grid-template-columns: 1.2fr 0.8fr;
+		gap: 1.25rem;
+		max-width: 56rem;
+		margin: 0 auto 3rem;
+		padding: 0 1rem;
 	}
 
 	.hero-image {
 		position: relative;
+		overflow: hidden;
+		border-radius: 4px;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+	}
+
+	.hero-image--primary {
+		aspect-ratio: 4 / 5;
+	}
+
+	.hero-image--secondary {
+		aspect-ratio: 3 / 4;
+		align-self: end;
+	}
+
+	.hero-img {
+		display: block;
 		width: 100%;
 		height: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		object-fit: cover;
+		filter: grayscale(100%);
+		image-rendering: auto;
+		image-rendering: smooth;
+		transform: translateZ(0);
+		backface-visibility: hidden;
 	}
 
-	.couple-image {
-		width: 100%;
-		height: auto;
-		object-fit: contain;
-		border-radius: 0.5rem;
-		box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-	}
-
-	@media (max-width: 968px) {
-		.hero-section {
+	@media (max-width: 900px) {
+		.hero-images {
 			grid-template-columns: 1fr;
-			gap: 2rem;
-			padding: 5.5rem 1rem 2rem 1rem;
-		}
-	}
-	@media (max-width: 768px) {
-		.hero-section {
-			padding-top: 6rem;
+			gap: 1rem;
 		}
 
-		.hero-image {
-			order: -1;
+		.hero-image--secondary {
+			align-self: stretch;
+			aspect-ratio: 16 / 10;
 		}
-
-		.couple-image {
-			max-width: 500px;
-			margin: 0 auto;
-		}
-	}
-
-	@media (max-width: 640px) {
-		.hero-section {
-			padding: 6rem 1rem 1.5rem 1rem;
-		}
-	}
-
-	.dress-code-section {
-		max-width: 1200px;
-		margin: 0 auto;
-		padding: 3rem 2rem;
-		position: relative;
-		z-index: 2;
-	}
-
-	.dress-code-content {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		gap: 3rem;
-		align-items: center;
-		border: 1px solid rgba(139, 115, 85, 0.2);
-		border-radius: 0.5rem;
-		padding: 2rem 2.5rem;
-		background-color: rgba(139, 115, 85, 0.05);
-	}
-
-	.dress-code-title {
-		font-family: 'Cinzel', serif;
-		font-size: 2rem;
-		font-weight: 600;
-		color: #0d0c16;
-		margin: 0 0 1rem 0;
-	}
-
-	.dress-code-description {
-		font-family: 'Cinzel', serif;
-		font-size: 1.125rem;
-		line-height: 1.6;
-		color: rgba(13, 12, 22, 0.85);
-		margin: 0;
-		max-width: 520px;
-	}
-
-	.dress-code-palette {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.dress-code-palette-label {
-		font-family: 'Cinzel', serif;
-		font-size: 0.875rem;
-		font-weight: 500;
-		color: rgba(13, 12, 22, 0.7);
-		margin: 0;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.palette-swatches {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-		justify-content: center;
-	}
-
-	.palette-swatch {
-		width: 3rem;
-		height: 3rem;
-		border-radius: 0.375rem;
-		border: 1px solid rgba(13, 12, 22, 0.15);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-		flex-shrink: 0;
 	}
 
 	@media (max-width: 768px) {
-		.dress-code-content {
-			grid-template-columns: 1fr;
-			text-align: center;
-			padding: 1.5rem 1.5rem;
+		.single-page {
+			padding: 11.5rem 1rem 3rem;
 		}
 
-		.dress-code-description {
-			max-width: none;
-			margin: 0 auto;
+		.page-section {
+			padding: 3rem 1rem;
 		}
 
-		.dress-code-palette {
-			order: -1;
-		}
-	}
-
-	@media (max-width: 640px) {
-		.dress-code-section {
-			padding: 2rem 1rem;
+		.page-section--hero {
+			padding-bottom: 3rem;
 		}
 
-		.dress-code-title {
-			font-size: 1.5rem;
-		}
-
-		.dress-code-description {
-			font-size: 1rem;
-		}
-
-		.palette-swatch {
-			width: 2.5rem;
-			height: 2.5rem;
+		.hero-images {
+			margin-bottom: 2rem;
 		}
 	}
-
 </style>
