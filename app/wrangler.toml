@@ -2,3 +2,6 @@ name = "dorinandavid"
 compatibility_date = "2024-12-01"
 pages_build_output_dir = "dist"
 
+# For `wrangler deploy` (Worker with assets) - serves static site from dist
+[assets]
+directory = "./dist"
