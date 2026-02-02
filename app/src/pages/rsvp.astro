@@ -8,7 +8,17 @@ import RSVP from '../components/RSVP.astro';
 <Layout>
 	<Signature currentPage="rsvp" />
 	<main class="rsvp-page">
-		<RSVP />
+		<noscript>
+			<div class="rsvp-noscript p-6 max-w-[800px] mx-auto text-center">
+				<h2 class="font-cinzel text-2xl text-[#0a0a0a] mb-4">Jelezz vissza nekünk</h2>
+				<p class="font-cinzel text-[#525252]">
+					A visszajelzéshez kérjük kapcsold be a JavaScriptet, vagy írj nekünk: <a href="mailto:info@dorinandavid.wedding" class="underline">info@dorinandavid.wedding</a>
+				</p>
+			</div>
+		</noscript>
+		<div id="rsvp-root">
+			<RSVP />
+		</div>
 	</main>
 	<Footer />
 </Layout>
@@ -16,6 +26,7 @@ import RSVP from '../components/RSVP.astro';
 <style>
 	.rsvp-page {
 		min-height: calc(100vh - 8rem);
+		min-height: calc(100dvh - 8rem);
 		padding: 14rem 1.5rem 4rem;
 		max-width: 1200px;
 		margin: 0 auto;
@@ -23,7 +34,14 @@ import RSVP from '../components/RSVP.astro';
 
 	@media (max-width: 768px) {
 		.rsvp-page {
-			padding: 14rem 1rem 3rem;
+			padding: calc(9rem + env(safe-area-inset-top, 0)) 1rem 3rem;
 		}
 	}
+
+	@media (max-width: 480px) {
+		.rsvp-page {
+			padding: calc(8.5rem + env(safe-area-inset-top, 0)) 0.75rem 2.5rem;
+		}
+	}
+
 </style>

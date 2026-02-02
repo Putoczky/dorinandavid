@@ -10,32 +10,32 @@ import Timeline from '../components/Timeline.astro';
 <Layout>
 	<Signature currentPage="home" />
 	<main class="single-page">
-		<section id="home" class="page-section page-section--hero">
+		<section id="home" class="page-section page-section--hero scroll-reveal">
 			<div class="hero-images">
 				<div class="hero-image hero-image--primary">
 					<img src="/kép4.jpg" alt="" class="hero-img" loading="eager" fetchpriority="high" />
 				</div>
 				<div class="hero-image hero-image--secondary">
-					<img src="/kép3.jpg" alt="" class="hero-img" loading="eager" />
+					<img src="/kép3.jpg" alt="" class="hero-img" loading="lazy" />
 				</div>
 			</div>
 		</section>
 
-		<div class="page-separator" aria-hidden="true"></div>
+		<div class="page-separator scroll-reveal" aria-hidden="true"></div>
 
-		<section id="meghivo" class="page-section">
+		<section id="meghivo" class="page-section scroll-reveal">
 			<Invitation />
 		</section>
 
-		<div class="page-separator" aria-hidden="true"></div>
+		<div class="page-separator scroll-reveal" aria-hidden="true"></div>
 
-		<section id="dresscode" class="page-section">
+		<section id="dresscode" class="page-section scroll-reveal">
 			<DresscodeSection />
 		</section>
 
-		<div class="page-separator" aria-hidden="true"></div>
+		<div class="page-separator scroll-reveal" aria-hidden="true"></div>
 
-		<div class="page-section page-section--last">
+		<div class="page-section page-section--last scroll-reveal">
 			<Timeline />
 		</div>
 	</main>
@@ -88,7 +88,7 @@ import Timeline from '../components/Timeline.astro';
 		flex-shrink: 0;
 	}
 
-	/* Hero: two main images */
+	/* Hero: két fő kép (eredeti elrendezés) */
 	.hero-images {
 		display: grid;
 		grid-template-columns: 1.2fr 0.8fr;
@@ -103,6 +103,8 @@ import Timeline from '../components/Timeline.astro';
 		overflow: hidden;
 		border-radius: 4px;
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+		min-height: 0;
+		width: 100%;
 	}
 
 	.hero-image--primary {
@@ -110,15 +112,18 @@ import Timeline from '../components/Timeline.astro';
 	}
 
 	.hero-image--secondary {
-		aspect-ratio: 3 / 4;
 		align-self: end;
+		/* Kártya mérete a képhez igazodik – nincs rögzített aspect-ratio */
 	}
 
 	.hero-img {
 		display: block;
 		width: 100%;
 		height: 100%;
+		min-width: 0;
+		min-height: 0;
 		object-fit: cover;
+		object-position: center;
 		filter: grayscale(100%);
 		image-rendering: auto;
 		image-rendering: smooth;
@@ -126,6 +131,14 @@ import Timeline from '../components/Timeline.astro';
 		backface-visibility: hidden;
 	}
 
+	/* Kisebb kép: kártya = kép mérete, egész kép látszik */
+	.hero-image--secondary .hero-img {
+		height: auto;
+		object-fit: contain;
+		object-position: center;
+	}
+
+	/* Tablet: egy oszlop */
 	@media (max-width: 900px) {
 		.hero-images {
 			grid-template-columns: 1fr;
@@ -134,25 +147,113 @@ import Timeline from '../components/Timeline.astro';
 
 		.hero-image--secondary {
 			align-self: stretch;
-			aspect-ratio: 16 / 10;
+		}
+
+		.hero-image--secondary .hero-img {
+			height: auto;
+			object-fit: contain;
+			object-position: center;
 		}
 	}
 
+	/* Mobil: tartalom közelebb a menühöz */
 	@media (max-width: 768px) {
 		.single-page {
-			padding: 11.5rem 1rem 3rem;
+			padding-top: calc(9rem + env(safe-area-inset-top, 0));
+			padding-bottom: 2rem;
+			padding-left: 1rem;
+			padding-right: 1rem;
 		}
 
 		.page-section {
-			padding: 3rem 1rem;
+			padding: 2.5rem 1rem;
+			min-height: min(40vh, 20rem);
 		}
 
 		.page-section--hero {
-			padding-bottom: 3rem;
+			padding-top: 1rem;
+			padding-bottom: 2.5rem;
 		}
 
 		.hero-images {
-			margin-bottom: 2rem;
+			margin-bottom: 1.5rem;
+			padding: 0;
+			gap: 0.75rem;
+			width: 100%;
+		}
+
+		.hero-image {
+			border-radius: 8px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+			width: 100%;
+			aspect-ratio: 4 / 5;
+			max-height: min(72dvh, 26rem);
+		}
+
+		.hero-image--primary {
+			/* Kártya mérete a képhez igazodik */
+			aspect-ratio: unset;
+			max-height: none;
+		}
+
+		.hero-image--secondary {
+			/* Kártya mérete a képhez igazodik */
+			aspect-ratio: unset;
+			max-height: none;
+		}
+
+		.hero-img {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+		}
+
+		/* Első és második kép: kártya a kép méretére, kép nem absolute */
+		.hero-image--primary .hero-img,
+		.hero-image--secondary .hero-img {
+			position: relative;
+			inset: unset;
+			width: 100%;
+			height: auto;
+			object-fit: contain;
+			object-position: center;
+		}
+
+		.page-separator {
+			max-width: 12rem;
+		}
+	}
+
+	/* Kis mobil: tartalom közelebb a menühöz */
+	@media (max-width: 480px) {
+		.single-page {
+			padding-top: calc(8.5rem + env(safe-area-inset-top, 0));
+			padding-bottom: 1.5rem;
+			padding-left: max(0.75rem, env(safe-area-inset-left));
+			padding-right: max(0.75rem, env(safe-area-inset-right));
+		}
+
+		.page-section {
+			padding: 2rem 0.75rem;
+			min-height: auto;
+		}
+
+		.page-section--hero {
+			padding-top: 0.75rem;
+			padding-bottom: 2rem;
+		}
+
+		.hero-images {
+			gap: 0.625rem;
+			margin-bottom: 1rem;
+			padding: 0;
+		}
+
+		.hero-image {
+			border-radius: 10px;
 		}
 	}
 </style>

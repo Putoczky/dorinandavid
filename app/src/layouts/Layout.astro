@@ -6,6 +6,12 @@ import '../styles/global.css';
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+		<meta name="theme-color" content="#ffffff" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>David es Dorina</title>
@@ -14,5 +20,22 @@ import '../styles/global.css';
 		<div class="paper-background">
 			<slot />
 		</div>
+		<script>
+			(function () {
+				const reveal = document.querySelectorAll('.scroll-reveal');
+				if (!reveal.length) return;
+				const observer = new IntersectionObserver(
+					(entries) => {
+						entries.forEach((entry) => {
+							if (entry.isIntersecting) {
+								entry.target.classList.add('is-visible');
+							}
+						});
+					},
+					{ rootMargin: '0px 0px -40px 0px', threshold: 0.1 }
+				);
+				reveal.forEach((el) => observer.observe(el));
+			})();
+		</script>
 	</body>
 </html>

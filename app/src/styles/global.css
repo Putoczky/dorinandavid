@@ -52,26 +52,63 @@ body {
 	position: relative;
 	background-color: #ffffff;
 	color: #0a0a0a;
-	font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+	font-family: "Cinzel", "Times New Roman", Georgia, serif;
 }
 
 [id] {
 	scroll-margin-top: 10rem;
 }
 
-.font-optima {
-	font-family: Optima, "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Geneva, Verdana, sans-serif;
+@media (max-width: 768px) {
+	[id] {
+		scroll-margin-top: calc(9rem + env(safe-area-inset-top, 0));
+	}
 }
 
-/* Simple white background - full viewport */
+@media (max-width: 480px) {
+	[id] {
+		scroll-margin-top: calc(8.5rem + env(safe-area-inset-top, 0));
+	}
+}
+
+/* Scroll reveal: csak opacity (transform nélkül, ne legyen plusz görgetősáv) */
+.scroll-reveal {
+	opacity: 0;
+	transition: opacity 0.5s ease-out;
+}
+
+.scroll-reveal.is-visible {
+	opacity: 1;
+}
+
+/* Első elem azonnal látható (hero) */
+.page-section--hero.scroll-reveal {
+	opacity: 1;
+}
+
+/* Better touch feedback on mobile */
+@media (hover: none) {
+	a, button {
+		-webkit-tap-highlight-color: rgba(0, 0, 0, 0.08);
+		touch-action: manipulation;
+	}
+}
+
+.font-cinzel {
+	font-family: "Cinzel", "Times New Roman", Georgia, serif;
+}
+
+/* Simple white background - full viewport (100% hogy ne legyen plusz görgetősáv) */
 .paper-background {
 	position: relative;
 	min-height: 100vh;
 	min-height: 100dvh;
 	width: 100%;
-	min-width: 100vw;
+	max-width: 100%;
 	overflow-x: hidden;
 	background-color: #ffffff;
+	padding-left: env(safe-area-inset-left, 0);
+	padding-right: env(safe-area-inset-right, 0);
 }
 
 /* Links and buttons */

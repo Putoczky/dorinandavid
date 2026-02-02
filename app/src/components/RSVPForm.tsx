@@ -196,37 +196,37 @@ export default function RSVPForm() {
 
 	if (step === 'rsvp') {
 		return (
-			<div className="p-8 px-4 pb-32 max-w-[800px] mx-auto relative z-[10]">
-			<h2 className="font-optima text-3xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
+			<div className="p-6 sm:p-8 px-4 sm:px-6 pb-24 sm:pb-32 max-w-[800px] mx-auto relative z-[10]">
+			<h2 className="font-cinzel text-2xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
 				Jelezz vissza nekünk
 			</h2>
-			<p className="font-optima text-lg sm:text-xl md:text-2xl font-normal text-[#0a0a0a] mb-8 text-center leading-relaxed">
+			<p className="font-cinzel text-base sm:text-xl md:text-2xl font-normal text-[#0a0a0a] mb-6 sm:mb-8 text-center leading-relaxed">
 			A következő vendégeknek a visszajelzését is el tudod küldeni:
 			</p>
 
-				<div className="flex flex-col gap-8 max-w-[800px] mx-auto">
+				<div className="flex flex-col gap-6 sm:gap-8 max-w-[800px] mx-auto">
 					{familyMembers.map((member) => (
-						<div key={member.id} className="border-b-2 border-[#0a0a0a] pb-6">
-							<div className="flex items-center gap-8 mb-4">
-								<span className="font-optima text-lg sm:text-xl text-[#0a0a0a] min-w-[200px]">
+						<div key={member.id} className="border-b-2 border-[#0a0a0a] pb-5 sm:pb-6">
+							<div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 mb-4">
+								<span className="font-cinzel text-base sm:text-xl text-[#0a0a0a] sm:min-w-[200px]">
 									{member.name}
 									{member.surname && ` ${member.surname}`}
 								</span>
-								<div className="flex gap-8 flex-1">
-									<label className="flex items-center gap-3 cursor-pointer">
+								<div className="flex flex-wrap gap-4 sm:gap-8 flex-1">
+									<label className="flex items-center gap-3 cursor-pointer min-h-[44px] py-1">
 										<input
 											type="checkbox"
 											checked={rsvpData[member.id!]?.szertartas ?? false}
 											onChange={(e) =>
 												updateRsvpData(member.id!, { szertartas: e.target.checked })
 											}
-											className="w-5 h-5 cursor-pointer"
+											className="w-5 h-5 min-w-[20px] min-h-[20px] cursor-pointer shrink-0"
 										/>
-										<span className="font-optima text-lg sm:text-xl text-[#0a0a0a]">
+										<span className="font-cinzel text-base sm:text-xl text-[#0a0a0a]">
 											Szertartas
 										</span>
 									</label>
-									<label className="flex items-center gap-3 cursor-pointer">
+									<label className="flex items-center gap-3 cursor-pointer min-h-[44px] py-1">
 										<input
 											type="checkbox"
 											checked={rsvpData[member.id!]?.lakodalom ?? false}
@@ -242,9 +242,9 @@ export default function RSVPForm() {
 													}));
 												}
 											}}
-											className="w-5 h-5 cursor-pointer"
+											className="w-5 h-5 min-w-[20px] min-h-[20px] cursor-pointer shrink-0"
 										/>
-										<span className="font-optima text-lg sm:text-xl text-[#0a0a0a]">
+										<span className="font-cinzel text-base sm:text-xl text-[#0a0a0a]">
 											Lakodalom
 										</span>
 									</label>
@@ -267,9 +267,9 @@ export default function RSVPForm() {
 														updateRsvpData(member.id!, { dietaryRestrictions: '' });
 													}
 												}}
-												className="w-5 h-5 cursor-pointer"
+												className="w-5 h-5 min-w-[20px] min-h-[20px] cursor-pointer shrink-0"
 											/>
-											<span className="font-optima text-base sm:text-lg text-[#0a0a0a]">
+											<span className="font-cinzel text-base sm:text-lg text-[#0a0a0a]">
 												Etelerzekenyseg
 											</span>
 										</label>
@@ -281,20 +281,20 @@ export default function RSVPForm() {
 													updateRsvpData(member.id!, { dietaryRestrictions: e.target.value })
 												}
 												placeholder="Pl. laktózérzékenység, gluténmentes..."
-												className="bg-transparent border-0 border-b-2 border-gray-400 py-2 font-optima text-base sm:text-lg text-[#0a0a0a] outline-none flex-1 placeholder:text-gray-500 placeholder:opacity-70 focus:border-gray-400"
+												className="bg-transparent border-0 border-b-2 border-gray-400 py-2 font-cinzel text-base sm:text-lg text-[#0a0a0a] outline-none flex-1 placeholder:text-gray-500 placeholder:opacity-70 focus:border-gray-400"
 											/>
 										)}
 									</div>
-									<label className="flex items-center gap-3 cursor-pointer">
+									<label className="flex items-center gap-3 cursor-pointer min-h-[44px] py-1">
 										<input
 											type="checkbox"
 											checked={rsvpData[member.id!]?.transfer ?? false}
 											onChange={(e) =>
 												updateRsvpData(member.id!, { transfer: e.target.checked })
 											}
-											className="w-5 h-5 cursor-pointer"
+											className="w-5 h-5 min-w-[20px] min-h-[20px] cursor-pointer shrink-0"
 										/>
-										<span className="font-optima text-base sm:text-lg text-[#0a0a0a]">
+										<span className="font-cinzel text-base sm:text-lg text-[#0a0a0a]">
 											Transfer
 										</span>
 									</label>
@@ -304,10 +304,10 @@ export default function RSVPForm() {
 					))}
 
 					<div className="flex flex-col gap-2 mt-8">
-						<label className="font-optima text-lg sm:text-xl text-[#0a0a0a]">
+						<label className="font-cinzel text-lg sm:text-xl text-[#0a0a0a]">
 							Email cím <span className="text-red-600">*</span>
 						</label>
-						<p className="font-optima text-base sm:text-lg text-[#0a0a0a] opacity-80 mb-2">
+						<p className="font-cinzel text-base sm:text-lg text-[#0a0a0a] opacity-80 mb-2">
 							Ide kuldjuk el az eskuvon keszult kepeket illetve kisfilmeket.
 						</p>
 						<input
@@ -318,17 +318,17 @@ export default function RSVPForm() {
 								setEmailError('');
 							}}
 							placeholder="email@example.com"
-							className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-optima text-lg sm:text-xl md:text-2xl text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252]"
+							className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-cinzel text-lg sm:text-xl md:text-2xl text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252]"
 						/>
 						{emailError && (
-							<span className="text-red-600 font-optima text-lg">
+							<span className="text-red-600 font-cinzel text-lg">
 								{emailError}
 							</span>
 						)}
 					</div>
 
 					<div className="flex flex-col gap-2 mt-8">
-						<label className="font-optima text-lg sm:text-xl text-[#0a0a0a]">
+						<label className="font-cinzel text-lg sm:text-xl text-[#0a0a0a]">
 							Megjegyzes
 						</label>
 						<textarea
@@ -336,17 +336,17 @@ export default function RSVPForm() {
 							onChange={(e) => setFamilyNotes(e.target.value)}
 							placeholder="Opcionalis megjegyzes..."
 							rows={4}
-							className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-optima text-base sm:text-lg text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252] resize-none"
+							className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-cinzel text-base sm:text-lg text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252] resize-none"
 						/>
 					</div>
 
 					{submitErrorMessage && (
-						<div className="text-red-600 font-optima text-lg text-center">
+						<div className="text-red-600 font-cinzel text-lg text-center">
 							{submitErrorMessage}
 						</div>
 					)}
 
-					<div className="flex gap-4 justify-center relative z-[11]">
+					<div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-stretch sm:items-center relative z-[11]">
 						<button
 							type="button"
 							onClick={() => {
@@ -362,7 +362,7 @@ export default function RSVPForm() {
 								verifyNameMutation.reset();
 								setSubmitErrorMessage('');
 							}}
-							className="bg-[#525252] border-2 border-[#525252] text-[#ffffff] py-3 px-8 font-optima text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] hover:border-[#404040]"
+							className="bg-[#525252] border-2 border-[#525252] text-[#ffffff] py-3 px-8 min-h-[48px] font-cinzel text-base sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] hover:border-[#404040]"
 						>
 							Vissza
 						</button>
@@ -370,7 +370,7 @@ export default function RSVPForm() {
 							type="button"
 							onClick={handleSubmitRSVP}
 							disabled={isSubmitting}
-							className="bg-[#525252] text-[#ffffff] border-0 py-3 px-8 font-optima text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] active:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed"
+							className="bg-[#525252] text-[#ffffff] border-0 py-3 px-8 min-h-[48px] font-cinzel text-base sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] active:bg-[#2a2a2a] disabled:opacity-50 disabled:cursor-not-allowed"
 						>
 							{isSubmitting ? 'Küldés...' : 'Elküldés'}
 						</button>
@@ -380,14 +380,14 @@ export default function RSVPForm() {
 		);
 	}
 
-	if (step === 'success') {
+		if (step === 'success') {
 		return (
-			<div className="p-8 px-4 pb-32 max-w-[800px] mx-auto relative z-[10]">
-				<h2 className="font-optima text-3xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
+			<div className="p-6 sm:p-8 px-4 sm:px-6 pb-24 sm:pb-32 max-w-[800px] mx-auto relative z-[10]">
+				<h2 className="font-cinzel text-3xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
 					Jelezz vissza nekünk
 				</h2>
 				<div className="flex flex-col items-center gap-8 max-w-[500px] mx-auto mt-12">
-					<p className="text-[#525252] font-optima text-xl sm:text-2xl md:text-3xl text-center">
+					<p className="text-[#525252] font-cinzel text-xl sm:text-2xl md:text-3xl text-center">
 						Valaszod elkuldve, koszonjuk a visszajelzest
 					</p>
 					<button
@@ -405,7 +405,7 @@ export default function RSVPForm() {
 							resetName();
 							verifyNameMutation.reset();
 						}}
-						className="bg-[#525252] text-[#ffffff] border-0 py-3 px-8 font-optima text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] active:bg-[#2a2a2a]"
+						className="bg-[#525252] text-[#ffffff] border-0 py-3 px-8 min-h-[48px] font-cinzel text-base sm:text-xl md:text-2xl cursor-pointer rounded transition-colors hover:bg-[#404040] active:bg-[#2a2a2a]"
 					>
 						Uj visszajelzes
 					</button>
@@ -415,11 +415,11 @@ export default function RSVPForm() {
 	}
 
 	return (
-		<div className="p-8 px-4 pb-32 max-w-[800px] mx-auto relative z-[10]">
-			<h2 className="font-optima text-3xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
+		<div className="p-6 sm:p-8 px-4 sm:px-6 pb-24 sm:pb-32 max-w-[800px] mx-auto relative z-[10]">
+			<h2 className="font-cinzel text-2xl sm:text-4xl md:text-5xl font-normal text-[#0a0a0a] mb-4 text-center">
 				Jelezz vissza nekünk
 			</h2>
-			<p className="font-optima text-lg sm:text-xl md:text-2xl font-normal text-[#0a0a0a] mb-8 text-center leading-relaxed">
+			<p className="font-cinzel text-base sm:text-xl md:text-2xl font-normal text-[#0a0a0a] mb-6 sm:mb-8 text-center leading-relaxed">
 				Kérjük, add meg a neved, hogy megtaláljuk a vendéglistán
 			</p>
 			<form
@@ -430,16 +430,16 @@ export default function RSVPForm() {
 					type="text"
 					{...registerName('name', { required: 'A név megadása kötelező' })}
 					placeholder="Név"
-					className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-optima text-lg sm:text-xl md:text-2xl text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252]"
+					className="bg-transparent border-0 border-b-2 border-[#0a0a0a] py-3 font-cinzel text-base sm:text-xl md:text-2xl text-[#0a0a0a] outline-none w-full placeholder:text-gray-500 placeholder:opacity-70 focus:border-[#525252] min-h-[48px]"
 				/>
 				{nameErrors.name && (
-					<span className="text-red-600 font-optima text-lg -mt-6 text-center">
+					<span className="text-red-600 font-cinzel text-lg -mt-6 text-center">
 						{nameErrors.name.message}
 					</span>
 				)}
 
 				{verifyErrorMessage && (
-					<div className="text-red-600 font-optima text-lg text-center">
+					<div className="text-red-600 font-cinzel text-lg text-center">
 						{verifyErrorMessage}
 					</div>
 				)}
@@ -447,7 +447,7 @@ export default function RSVPForm() {
 				<button
 					type="submit"
 					disabled={verifyNameMutation.isPending}
-					className="bg-[#0a0a0a] text-[#ffffff] border-0 py-3 px-8 font-optima text-lg sm:text-xl md:text-2xl cursor-pointer rounded transition-colors self-center hover:bg-[#2a2a2a] active:bg-[#404040] disabled:opacity-50 disabled:cursor-not-allowed"
+					className="bg-[#0a0a0a] text-[#ffffff] border-0 py-3 px-8 min-h-[48px] font-cinzel text-base sm:text-xl md:text-2xl cursor-pointer rounded transition-colors self-center hover:bg-[#2a2a2a] active:bg-[#404040] disabled:opacity-50 disabled:cursor-not-allowed"
 				>
 					{verifyNameMutation.isPending ? 'Keresés...' : 'Tovább'}
 				</button>
